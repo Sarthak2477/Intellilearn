@@ -8,6 +8,7 @@ import React from 'react'
 import '@xyflow/react/dist/style.css';
 import './css/board.css';
 import PromptBar from './components/promptbar';
+import CodeEditor from './components/codeeditor';
 
 type Props = {}
 
@@ -109,11 +110,12 @@ export default function SchemaBoard({}: Props) {
         nodeTypes={{
           databaseSchema: DatabaseSchemaNode
         }}
-        fitView
       >
         <Background color='#fff2' bgColor='var(--board-default-background)' size={2} gap={20} />
         <Controls position='top-right'/>
       </ReactFlow>
+
+      <CodeEditor />
       <PromptBar />
     </div>
   );

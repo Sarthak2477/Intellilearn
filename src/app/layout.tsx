@@ -39,7 +39,7 @@ export default function RootLayout({
           <link rel="shortcut icon" href="/logo.ico" type="image/x-icon" />
         </Head>
         <body
-          className={`${poppins.className} ${nunito.className} antialiased`}
+          className={`${poppins.className} ${nunito.className} antialiased overflow-hidden`}
         >
           {children}
         </body>
