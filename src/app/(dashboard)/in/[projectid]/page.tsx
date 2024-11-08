@@ -1,4 +1,4 @@
-import SchemaBoard from '@/components/flow/board';
+import SchemaBoard from '@/components/board';
 import React from 'react'
 
 export default function ProjectPage({
