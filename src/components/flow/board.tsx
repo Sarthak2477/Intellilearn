@@ -120,7 +120,6 @@ export default function SchemaBoard({}: Props) {
           <Background color='#fff2' bgColor='var(--board-default-background)' size={2} gap={20} />
           <Controls position='top-right'/>
         </ReactFlow>
-        <button className="bg-blue-500 absolute top-0 left-0" onClick={toggleEditorOpen}>Click</button>
         <PromptBar />
       </div>
 
