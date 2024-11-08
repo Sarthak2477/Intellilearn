@@ -118,7 +118,7 @@ export default function SchemaBoard({}: Props) {
           }}
         >
           <Background color='#fff2' bgColor='var(--board-default-background)' size={2} gap={20} />
-          <Controls position='top-right'/>
+          <Controls position='top-left'/>
         </ReactFlow>
         <PromptBar />
       </div>
