@@ -63,7 +63,7 @@ export function DatabaseSchemaNode({
 }: NodeProps<DatabaseSchemaNode>) {
   return (
     <BaseNode className="p-0 bg-zinc-800 min-w-[200px]" selected={selected}>
-      <h2 className="rounded-tl-md rounded-tr-md bg-zinc-900 p-2 text-center text-sm text-blue-400 font-bold">
+      <h2 className="rounded-tl-md rounded-tr-md bg-zinc-900 p-2 text-center text-sm text-white font-bold">
         {data.label}
       </h2>
       <div className="grid">

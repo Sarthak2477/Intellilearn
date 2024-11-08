@@ -61,7 +61,8 @@ export default function CodeEditor({}: Props) {
             options={{
               minimap: {
                 enabled: false,
-              }
+              },
+              fontFamily: "JetBrains Mono"
             }}
             beforeMount={monaco => {
               monaco.editor.defineTheme('custom-theme', {
