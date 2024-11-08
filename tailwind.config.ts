@@ -64,6 +64,7 @@ export default {
   	},
 		animation: {
 			"meteor-effect": "meteor 5s linear infinite",
+			"spin": "spin 1s linear infinite",
 		},
 		keyframes: {
 			meteor: {
@@ -74,6 +75,14 @@ export default {
 					opacity: "0",
 				},
 			},
+			spin: {
+				"0%" : {
+					transform: "rotate(0deg)",
+				},
+				"100%" : {
+					transform: "rotate(360deg)",
+				},
+			}
 		},
   },
   plugins: [require("tailwindcss-animate")],

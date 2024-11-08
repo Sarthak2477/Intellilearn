@@ -1,13 +1,14 @@
 "use client";
 
 import useFlowStore from '@/stores/flow';
-import { X } from 'lucide-react';
+import { LoaderCircle, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import React, { useEffect } from 'react';
 
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import CodeEditor from './code-editor-component';
 import { Tabs, TabsContent, TabsTrigger, TabsList } from '@/components/ui/tabs';
+import CodeEditorTab from './code-editor-tab';
 
 type Props = {};
 
@@ -61,8 +62,8 @@ export default function CodeEditorSection({}: Props) {
 
           <Tabs>
             <TabsList defaultValue={TABS__MAIN_SCHEMA} className='bg-transparent gap-2 border-b-[1px] border-gray-500/40 pb-3 mb-3 rounded-none w-full justify-start'>
-              <TabsTrigger value={TABS__MAIN_SCHEMA}>Schema</TabsTrigger>
-              <TabsTrigger value={TABS__DOCUMENTATION}>Documentation</TabsTrigger>
+              <CodeEditorTab value={TABS__MAIN_SCHEMA}>Schema</CodeEditorTab>
+              <CodeEditorTab value={TABS__DOCUMENTATION}>Documentation</CodeEditorTab>
             </TabsList>
             <TabsContent value={TABS__MAIN_SCHEMA}>
               <CodeEditor />          
