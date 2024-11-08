@@ -7,8 +7,13 @@ import React, { useEffect } from 'react';
 
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import CodeEditor from './code-editor-component';
+import { Tabs, TabsContent, TabsTrigger, TabsList } from '@/components/ui/tabs';
 
 type Props = {};
+
+const TABS__MAIN_SCHEMA = "main-code";
+const TABS__DOCUMENTATION = "documentation";
+const TABS__DIFF = "diff";
 
 export default function CodeEditorSection({}: Props) {
   const { toggleEditorOpen, codeEditorOpen } = useFlowStore();
@@ -41,7 +46,7 @@ export default function CodeEditorSection({}: Props) {
       >
         <div className={`p-4 flex flex-col`}>
           <div className='flex justify-between items-center px-2 mb-4'>
-            <span className='font-bold text-emerald-500 font-sans'>SQL Code</span>
+            <span className='font-bold text-emerald-500 font-sans text-xl'>Schema Inspector</span>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -54,7 +59,20 @@ export default function CodeEditorSection({}: Props) {
             </TooltipProvider>
           </div>
 
-          <CodeEditor />          
+          <Tabs>
+            <TabsList defaultValue={TABS__MAIN_SCHEMA} className='bg-transparent gap-2 border-b-[1px] border-gray-500/40 pb-3 mb-3 rounded-none w-full justify-start'>
+              <TabsTrigger value={TABS__MAIN_SCHEMA}>Schema</TabsTrigger>
+              <TabsTrigger value={TABS__DOCUMENTATION}>Documentation</TabsTrigger>
+            </TabsList>
+            <TabsContent value={TABS__MAIN_SCHEMA}>
+              <CodeEditor />          
+            </TabsContent>
+
+            <TabsContent value={TABS__DOCUMENTATION}>
+              Documentation
+            </TabsContent>
+
+          </Tabs>
         </div>
       </motion.div>
     </>
