@@ -7,7 +7,7 @@ function Layout({
   children: React.ReactNode,
 }) {
   return (
-    <div className="w-screen h-screen relative">
+    <div className="w-screen h-screen relative flex flex-col">
       <NavigationBar />
       { children }
     </div>

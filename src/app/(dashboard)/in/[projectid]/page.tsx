@@ -1,3 +1,4 @@
+import SchemaBoard from '@/components/flow/board';
 import React from 'react'
 
 export default function ProjectPage({
@@ -9,6 +10,8 @@ export default function ProjectPage({
 }) {
   
   return (
-    <div>ProjectPage</div>
+    <div className='flex-1 flex flex-col'>
+      <SchemaBoard />
+    </div>
   );
 }
