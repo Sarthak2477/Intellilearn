@@ -3,7 +3,7 @@
 import { Background, ReactFlow, Controls } from '@xyflow/react';
 import { DatabaseSchemaNode } from "@/components/database-schema-node";
 
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import '@xyflow/react/dist/style.css';
 import './css/board.css';
@@ -15,7 +15,7 @@ import useFlowStore from '@/stores/flow';
 type Props = {}
 
 export default function SchemaBoard({}: Props) {
-  const { codeEditorOpen } = useFlowStore();
+  const { codeEditorOpen, toggleEditorOpen } = useFlowStore();
   
   const nodes = [
     {
@@ -104,7 +104,6 @@ export default function SchemaBoard({}: Props) {
   ];
   
   
-  
   return (
     <div className='flex-1 relative flex'>
       <div
@@ -121,12 +120,11 @@ export default function SchemaBoard({}: Props) {
           <Background color='#fff2' bgColor='var(--board-default-background)' size={2} gap={20} />
           <Controls position='top-right'/>
         </ReactFlow>
+        <button className="bg-blue-500 absolute top-0 left-0" onClick={toggleEditorOpen}>Click</button>
         <PromptBar />
       </div>
 
-      {
-        codeEditorOpen && <CodeEditor />
-      }
+      <CodeEditor />
     </div>
   );
 }
