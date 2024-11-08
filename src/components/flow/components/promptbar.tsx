@@ -1,3 +1,4 @@
+import { Meteors } from '@/components/global/Meteor'
 import { Input } from '@/components/ui/input'
 import { Pickaxe, Zap } from 'lucide-react'
 import React from 'react'
@@ -11,6 +12,7 @@ export default function PromptBar({}: Props) {
   */
   
   return (
+    
     <div className='
       absolute 
       w-[32rem] min-h-14 
@@ -21,7 +23,9 @@ export default function PromptBar({}: Props) {
       flex items-center justify-between
       px-4
 
+      overflow-hidden
     '>
+      <Meteors number={10} className=''/>
       <Zap className='text-zinc-700' size={18} />
       <Input 
         className='peer border-0 focus-visible:ring-0 placeholder:text-zinc-500 text-zinc-500 py-3 !text-xs' 
@@ -33,18 +37,18 @@ export default function PromptBar({}: Props) {
         bg-transparent
         hover:bg-emerald-600
         hover:text-zinc-800
-
+        
         right-4
         absolute
         peer-[:not(:placeholder-shown)]:translate-y-0
         -translate-y-10
-
+        
         p-2
         rounded-lg
         cursor-pointer
         
         transition-all
-      '>
+        '>
         <Pickaxe size={18} />
       </div>
     </div>

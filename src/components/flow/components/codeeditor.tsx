@@ -42,11 +42,11 @@ export default function CodeEditor({}: Props) {
       >
         <div className={`p-4 flex flex-col`}>
           <div className='flex justify-between items-center px-2 mb-4'>
-            <span className='font-bold text-slate-500'>SQL Code</span>
+            <span className='font-bold text-emerald-500 font-sans'>SQL Code</span>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <X onClick={toggleEditorOpen} size={18} />
+                  <X onClick={toggleEditorOpen} size={18} className='text-emerald-500'/>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Close</p>
