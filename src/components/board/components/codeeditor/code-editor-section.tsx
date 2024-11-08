@@ -2,8 +2,8 @@
 
 import useFlowStore from '@/stores/flow';
 import { LoaderCircle, X } from 'lucide-react';
-import { motion } from 'framer-motion';
-import React, { useEffect } from 'react';
+import { motion, useScroll } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import CodeEditor from './code-editor-component';
@@ -16,8 +16,17 @@ const TABS__MAIN_SCHEMA = "main-code";
 const TABS__DOCUMENTATION = "documentation";
 const TABS__DIFF = "diff";
 
+const TABS__DESCRIPTION: {[_:string]:string} = {
+  "main-code": "View AI-generated schema of your prompts",
+  "documentation": "AI-generated documentaions of the schema code",
+  "diff": "Compare suggestions against old schema"
+}
+
 export default function CodeEditorSection({}: Props) {
   const { toggleEditorOpen, codeEditorOpen } = useFlowStore();
+  
+  const [tab, setTab] = useState<string>(TABS__MAIN_SCHEMA);
+  const handleTabChange = (value: string) => setTab(value);
   
   useEffect(() => {
     
@@ -47,7 +56,10 @@ export default function CodeEditorSection({}: Props) {
       >
         <div className={`p-4 flex flex-col`}>
           <div className='flex justify-between items-center px-2 mb-4'>
-            <span className='font-bold text-emerald-500 font-sans text-xl'>Schema Inspector</span>
+            <div className='flex flex-col'>
+              <span className='font-bold text-emerald-500 font-sans text-xl'>Schema Inspector</span>
+              <p className='text-xs text-gray-400 font-sans'>{TABS__DESCRIPTION[tab]}</p>
+            </div>            
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -60,8 +72,8 @@ export default function CodeEditorSection({}: Props) {
             </TooltipProvider>
           </div>
 
-          <Tabs>
-            <TabsList defaultValue={TABS__MAIN_SCHEMA} className='bg-transparent gap-2 border-b-[1px] border-gray-500/40 pb-3 mb-3 rounded-none w-full justify-start'>
+          <Tabs value={tab} onValueChange={handleTabChange}>
+            <TabsList className='bg-transparent gap-2 border-b-[1px] border-gray-500/40 pb-3 mb-3 rounded-none w-full justify-start'>
               <CodeEditorTab value={TABS__MAIN_SCHEMA}>Schema</CodeEditorTab>
               <CodeEditorTab value={TABS__DOCUMENTATION}>Documentation</CodeEditorTab>
             </TabsList>
