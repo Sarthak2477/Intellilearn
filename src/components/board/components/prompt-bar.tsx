@@ -1,4 +1,4 @@
-import { Meteors } from '@/components/global/Meteor'
+import { Meteors } from '@/components/global/meteors'
 import { Input } from '@/components/ui/input'
 import { Pickaxe, Zap } from 'lucide-react'
 import React from 'react'

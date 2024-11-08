@@ -1,21 +1,21 @@
 "use client";
 
 import useFlowStore from '@/stores/flow';
-import { Code2, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-import { Editor, loader } from '@monaco-editor/react';
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import CodeEditor from './code-editor-component';
 
 type Props = {};
 
-export default function CodeEditor({}: Props) {
+export default function CodeEditorSection({}: Props) {
   const { toggleEditorOpen, codeEditorOpen } = useFlowStore();
   
   useEffect(() => {
     
-  }, [])
+  }, []);
   
   return (
     <>
@@ -53,27 +53,8 @@ export default function CodeEditor({}: Props) {
               </Tooltip>
             </TooltipProvider>
           </div>
-          <Editor 
-            height="80vh"
-            language='sql'
-            theme="custom-theme"
-            options={{
-              minimap: {
-                enabled: false,
-              },
-              fontFamily: "JetBrains Mono"
-            }}
-            beforeMount={monaco => {
-              monaco.editor.defineTheme('custom-theme', {
-                base: 'vs-dark',
-                inherit: true,
-                rules: [],
-                colors: {
-                  'editor.background': '#00000000',
-                },
-              });
-            }}
-          />
+
+          <CodeEditor />          
         </div>
       </motion.div>
     </>

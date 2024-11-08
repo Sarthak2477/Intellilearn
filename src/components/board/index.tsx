@@ -1,9 +1,9 @@
 "use client";
 
-import PromptBar from './components/promptbar';
-import CodeEditor from './components/codeeditor';
+import PromptBar from './components/prompt-bar';
+import CodeEditorSection from './components/code-editor-section';
 import useFlowStore from '@/stores/flow';
-import NodeRenderer from './components/renderer';
+import NodeRenderer from './components/react-flow-renderer';
 
 type Props = {}
 
@@ -171,7 +171,7 @@ export default function SchemaBoard({}: Props) {
         <PromptBar />
       </div>
 
-      <CodeEditor />
+      <CodeEditorSection />
     </div>
   );
 }

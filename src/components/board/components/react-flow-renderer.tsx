@@ -120,11 +120,14 @@ export default function NodeRenderer({
           <Tooltip>
             <TooltipTrigger>
               <Button
+                asChild
                 variant="secondary"
                 onClick={handleAutoLayout}
                 className="px-3 py-2 rounded-md flex items-center justify-center gap-2"
               >
-                <LayoutGrid />
+                <div>
+                  <LayoutGrid />
+                </div>
               </Button>
             </TooltipTrigger>
             <TooltipContent className='bg-white text-primary'>
