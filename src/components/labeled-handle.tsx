@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { CSSProperties } from "react";
 import { cn } from "@/lib/utils";
 import { HandleProps } from "@xyflow/react";
 
@@ -24,8 +24,9 @@ const LabeledHandle = React.forwardRef<
       title: string;
       handleClassName?: string;
       labelClassName?: string;
+      labelStyle?: CSSProperties,
     }
->(({ className, labelClassName, title, position, ...props }, ref) => (
+>(({ className, labelClassName, labelStyle, title, position, ...props }, ref) => (
   <div
     ref={ref}
     title={title}
@@ -36,7 +37,7 @@ const LabeledHandle = React.forwardRef<
     )}
   >
     <BaseHandle position={position} {...props} />
-    <label className={`px-3 text-foreground ${labelClassName}`}>{title}</label>
+    <label style={labelStyle} className={`px-3 text-foreground ${labelClassName}`}>{title}</label>
   </div>
 ));
 

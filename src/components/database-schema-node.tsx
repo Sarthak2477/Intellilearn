@@ -12,49 +12,50 @@ const getTypeColor = (type: string): string => {
     [_: string]: string,
   } = {
     // Numeric types
-    'int': 'text-blue-600',
-    'integer': 'text-blue-600',
-    'float': 'text-blue-600',
-    'double': 'text-blue-600',
-    'decimal': 'text-blue-600',
-    'number': 'text-blue-600',
+    'int': '#2563eb',        // text-blue-500
+    'integer': '#2563eb',    // text-blue-500
+    'float': '#2563eb',      // text-blue-500
+    'double': '#2563eb',     // text-blue-500
+    'decimal': '#2563eb',    // text-blue-500
+    'number': '#2563eb',     // text-blue-500
     
     // String types
-    'string': 'text-emerald-600',
-    'text': 'text-emerald-600',
-    'char': 'text-emerald-600',
-    'varchar': 'text-emerald-600',
+    'string': '#10b981',     // text-emerald-500
+    'text': '#10b981',       // text-emerald-500
+    'char': '#10b981',       // text-emerald-500
+    'varchar': '#10b981',    // text-emerald-500
     
     // Date/Time types
-    'date': 'text-purple-600',
-    'datetime': 'text-purple-600',
-    'timestamp': 'text-purple-600',
-    'time': 'text-purple-600',
+    'date': '#7c3aed',       // text-purple-500
+    'datetime': '#7c3aed',   // text-purple-500
+    'timestamp': '#7c3aed',  // text-purple-500
+    'time': '#7c3aed',       // text-purple-500
     
     // Boolean type
-    'boolean': 'text-yellow-600',
-    'bool': 'text-yellow-600',
+    'boolean': '#f59e0b',     // text-yellow-500
+    'bool': '#f59e0b',        // text-yellow-500
     
     // Array/Object types
-    'array': 'text-pink-600',
-    'object': 'text-pink-600',
-    'json': 'text-pink-600',
+    'array': '#d946ef',       // text-pink-500
+    'object': '#d946ef',      // text-pink-500
+    'json': '#d946ef',        // text-pink-500
     
     // Binary types
-    'binary': 'text-orange-600',
-    'blob': 'text-orange-600',
+    'binary': '#fb923c',      // text-orange-500
+    'blob': '#fb923c',        // text-orange-500
     
     // UUID/ID types
-    'uuid': 'text-cyan-600',
-    'id': 'text-cyan-600',
+    'uuid': '#22d3ee',        // text-cyan-500
+    'id': '#22d3ee',          // text-cyan-500
     
     // Default
-    'default': 'text-gray-600'
+    'default': '#6b7280'      // text-gray-500
   };
 
   const normalizedType = type.toLowerCase();
-  return typeColor[normalizedType]  || typeColor.default;
+  return typeColor[normalizedType] || typeColor.default;
 };
+
 
 export function DatabaseSchemaNode({
   data,
@@ -82,13 +83,16 @@ export function DatabaseSchemaNode({
             </div>
             <div className="relative py-3 pr-0 text-right font-mono">
               <LabeledHandle
+                labelStyle={{
+                  color: getTypeColor(entry.type),
+                }}
                 id={entry.title}
                 title={entry.type}
                 type="source"
                 position={Position.Right}
                 className="p-0 text-blue-400"
                 handleClassName="p-0"
-                labelClassName={`p-0 font-bold ${getTypeColor(entry.type)}`}
+                labelClassName={`p-0 font-bold`}
               />
             </div>
           </div>
