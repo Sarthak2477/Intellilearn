@@ -53,7 +53,8 @@ export default {
   		},
   		fontFamily: {
   			sans: 'Nunito',
-  			poppins: 'var(--font-poppins)'
+  			poppins: 'var(--font-poppins)',
+				mono: 'JetBrains Mono'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

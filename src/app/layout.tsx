@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
-import { Nunito, Poppins } from "next/font/google";
+import { Nunito, Poppins, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
 
 import {
   ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
 } from "@clerk/nextjs";
 
 const nunito = Nunito({
@@ -19,6 +15,10 @@ const poppins = Poppins({
   weight: ["100","300","400","500","600","700","800"],
   subsets: ["latin"],
   variable: "--font-poppins"
+});
+
+const jetbrains_mono = JetBrains_Mono({
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -39,7 +39,7 @@ export default function RootLayout({
           <link rel="shortcut icon" href="/logo.ico" type="image/x-icon" />
         </Head>
         <body
-          className={`${poppins.className} ${nunito.className} antialiased overflow-hidden`}
+          className={`${poppins.style} ${jetbrains_mono.style} ${nunito.className}  antialiased overflow-hidden`}
         >
           {children}
         </body>
