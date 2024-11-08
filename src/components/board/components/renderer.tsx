@@ -3,6 +3,9 @@
 import React, { useCallback, useEffect } from 'react';
 import { Background, ReactFlow, Controls, useNodesState, useEdgesState } from '@xyflow/react';
 import type { Edge, Node } from '@xyflow/react';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { LayoutGrid } from 'lucide-react';
 
 import ELK from 'elkjs/lib/elk.bundled.js';
 
@@ -112,12 +115,24 @@ export default function NodeRenderer({
         <Background color='#fff2' bgColor='var(--board-default-background)' size={2} gap={20} />
         <Controls position='top-left'/>
       </ReactFlow>
-      <button
-          onClick={handleAutoLayout}
-          className="absolute top-4 right-4 bg-primary text-primary-foreground shadow hover:bg-primary/90 px-3 py-2 rounded-md"
-        >
-          Auto Layout
-      </button>
+      <div className='absolute top-4 right-4 '>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant="secondary"
+                onClick={handleAutoLayout}
+                className="px-3 py-2 rounded-md flex items-center justify-center gap-2"
+              >
+                <LayoutGrid />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className='bg-white text-primary'>
+                Auto Layout
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
     </>
   )
 }

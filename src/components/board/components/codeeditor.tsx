@@ -6,8 +6,7 @@ import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
 import { Editor, loader } from '@monaco-editor/react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { TooltipProvider } from '@radix-ui/react-tooltip';
+import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 type Props = {};
 
@@ -45,7 +44,7 @@ export default function CodeEditor({}: Props) {
             <span className='font-bold text-emerald-500 font-sans'>SQL Code</span>
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                   <X onClick={toggleEditorOpen} size={18} className='text-emerald-500'/>
                 </TooltipTrigger>
                 <TooltipContent>
