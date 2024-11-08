@@ -10,9 +10,13 @@ import './css/board.css';
 import PromptBar from './components/promptbar';
 import CodeEditor from './components/codeeditor';
 
+import useFlowStore from '@/stores/flow';
+
 type Props = {}
 
 export default function SchemaBoard({}: Props) {
+  const { codeEditorOpen } = useFlowStore();
+  
   const nodes = [
     {
       id: "1",
@@ -102,21 +106,27 @@ export default function SchemaBoard({}: Props) {
   
   
   return (
-    <div className='flex-1 relative flex flex-col'>
-      <ReactFlow
-        colorMode='dark'
-        nodes={nodes}
-        edges={edges}
-        nodeTypes={{
-          databaseSchema: DatabaseSchemaNode
-        }}
+    <div className='flex-1 relative flex'>
+      <div
+        className='flex-[3] relative'
       >
-        <Background color='#fff2' bgColor='var(--board-default-background)' size={2} gap={20} />
-        <Controls position='top-right'/>
-      </ReactFlow>
+        <ReactFlow
+          colorMode='dark'
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={{
+            databaseSchema: DatabaseSchemaNode
+          }}
+        >
+          <Background color='#fff2' bgColor='var(--board-default-background)' size={2} gap={20} />
+          <Controls position='top-right'/>
+        </ReactFlow>
+        <PromptBar />
+      </div>
 
-      <CodeEditor />
-      <PromptBar />
+      {
+        codeEditorOpen && <CodeEditor />
+      }
     </div>
   );
 }

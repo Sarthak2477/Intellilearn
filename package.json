@@ -11,16 +11,18 @@
   "dependencies": {
     "@clerk/nextjs": "^6.2.1",
     "@clerk/themes": "^2.1.41",
+    "@uiw/codemirror-theme-github": "^4.23.6",
+    "@uiw/react-codemirror": "^4.23.6",
     "@xyflow/react": "^12.3.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.454.0",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
-    "react-code-mirror": "^3.1.0",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "typescript": "^5",
