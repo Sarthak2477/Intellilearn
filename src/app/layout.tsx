@@ -3,6 +3,14 @@ import { Nunito, Poppins } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
 
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
+
 const nunito = Nunito({
   subsets: ["latin"],
 });
@@ -25,15 +33,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <Head>
-        <link rel="shortcut icon" href="/logo.ico" type="image/x-icon" />
-      </Head>
-      <body
-        className={`${poppins.className} ${nunito.className} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <Head>
+          <link rel="shortcut icon" href="/logo.ico" type="image/x-icon" />
+        </Head>
+        <body
+          className={`${poppins.className} ${nunito.className} antialiased`}
+        >
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
