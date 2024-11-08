@@ -8,6 +8,6 @@ export default function Page() {
       <span className="text-sm text-gray-400">
         Tedious SQL writing made easy with interactive AI-powered platform</span>
     </div>
-    <SignIn />
+    <SignIn signUpUrl="signup/" />
   </div>
 }
