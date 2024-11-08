@@ -21,7 +21,7 @@ export default clerkMiddleware(async (auth, request) => {
     // Don't allow signed in user to got in to authentication routes
     
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    url.pathname = "/dashboard";
     return NextResponse.redirect(url);
   }
 });
