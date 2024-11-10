@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import CodeEditor from './code-editor-component';
 import { Tabs, TabsContent, TabsTrigger, TabsList } from '@/components/ui/tabs';
-import CodeEditorTab from './code-editor-tab';
+import CodeEditorTab from './inspector-tab';
 import useCodeEditorStore from '@/stores/codeeditor';
 
 type Props = {};

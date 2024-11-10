@@ -1,7 +1,7 @@
 "use client";
 
 import PromptBar from './components/prompt-bar';
-import CodeEditorSection from './components/codeeditor/code-editor-section';
+import CodeEditorSection from './components/inspector/inspector-section';
 import NodeRenderer from './components/react-flow-renderer';
 import useCodeEditorStore from '@/stores/codeeditor';
 import useLoaderStore, { LOADER_TO_MAIN_CODE } from '@/stores/loader';
