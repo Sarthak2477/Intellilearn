@@ -13,6 +13,9 @@ import { generateSchemaFromPrompt } from "@/actions/schema-generator";
 import useCodeEditorStore from '@/stores/codeeditor';
 import useFlowStore from '@/stores/flow';
 import useLoaderStore, { ENUM__LOADER_TO_MAIN_CODE } from '@/stores/loader';
+import { generateFlowDataFromSchema } from '@/actions/flow-generator';
+import { TableNode } from '@/types/renderer';
+import { Edge } from '@xyflow/react';
 
 type Props = {}
 
@@ -25,7 +28,7 @@ export default function PromptBar({}: Props) {
   const [prompt, setPrompt] = useState("");
 
   const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, setDiffSchemaText , setMainCodeDiffMode } = useCodeEditorStore();
-  const { setEditorOpen, codeEditorOpen } = useFlowStore();
+  const { setEditorOpen, codeEditorOpen, setFlowEdges, setFlowNodes } = useFlowStore();
   const { setMainCodeLoadingValue } = useLoaderStore();
 
   async function handlePromptSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -39,7 +42,12 @@ export default function PromptBar({}: Props) {
     if ( !codeEditorOpen ) setEditorOpen(true);
     
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.CONNECTING_TO_OPENAI); // Set to initial Value
+
+    // Emulate loading for user convinience
+    if (isDiffMode) setTimeout(() => setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_SQL_CONTENT), 2000)
+      
     const response = await generateSchemaFromPrompt(prompt, isDiffMode ? mainSchemaText : undefined);
+
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_SQL_CONTENT)
 
     if ( isDiffMode ) {
@@ -49,6 +57,20 @@ export default function PromptBar({}: Props) {
           addToMainSchemaText(chunk.choices[0]?.delta?.content || "");
       }
     }
+
+    setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_FLOW_CONTENT);
+    const response2 = await generateFlowDataFromSchema(mainSchemaText);
+    const { nodes, edges } : {
+      nodes: TableNode[],
+      edges: Edge[],
+    } = JSON.parse(response2.choices[0].message.content || "");
+
+    console.log(nodes);
+    console.log(edges);
+    
+    setFlowNodes(nodes);
+    setFlowEdges(edges);
+    
     setBuffering(false);
     setPrompt("");
   }

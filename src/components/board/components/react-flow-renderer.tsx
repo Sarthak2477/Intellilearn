@@ -10,6 +10,7 @@ import { LayoutGrid } from 'lucide-react';
 import ELK from 'elkjs/lib/elk.bundled.js';
 
 import { DatabaseSchemaNode } from "@/components/database-schema-node";
+import { TableNode } from '@/types/renderer';
 
 import '@xyflow/react/dist/style.css';
 import '../css/board.css';
@@ -31,25 +32,19 @@ type NodeRendererProps = {
   nodes: TableNode[],
   edges: Edge[],
 }
-
-export type TableNode = Omit<Node, 'data'> & {
-  data: Node['data'] & {
-    schema: {
-      title: string,
-      type: string,
-      is_null?: boolean,
-      is_unique?: boolean,
-      is_pk?: boolean,
-    }[]
-  }
-}
-
 export default function NodeRenderer({
   nodes: i__nodes,
   edges: i__edges,
 }: NodeRendererProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState(i__nodes);
   const [edges, setEdges] = useEdgesState(i__edges);
+
+  // Assign nodes and edge and auto layout them
+  useEffect(() => {
+    setNodes(i__nodes);
+    setEdges(i__edges);
+    handleAutoLayout();
+  }, [i__nodes, i__edges]);
 
   const getNodeDimensions = (node: TableNode) => ({
     width: 280,

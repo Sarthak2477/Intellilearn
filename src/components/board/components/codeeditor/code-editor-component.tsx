@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { DiffEditor, Editor } from '@monaco-editor/react';
 import useCodeEditorStore from '@/stores/codeeditor';
@@ -76,7 +76,7 @@ export default function CodeEditor({}: CodeEditorProps) {
     <Editor 
       value={mainSchemaText || ""}
       height="70vh"
-      language='sql'
+      language="sql"
       theme="custom-theme"
       options={{
         minimap: {
@@ -95,6 +95,7 @@ export default function CodeEditor({}: CodeEditorProps) {
           },
         });
       }}
+      keepCurrentModel={true}
     />
   )
 }
