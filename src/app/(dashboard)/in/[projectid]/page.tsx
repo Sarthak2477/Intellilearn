@@ -4,9 +4,7 @@ import React from 'react'
 export default function ProjectPage({
   params,
 }: {
-  params: {
-    projectid: string,
-  }
+  params: any
 }) {
   
   return (
