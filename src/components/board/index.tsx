@@ -4,6 +4,8 @@ import PromptBar from './components/prompt-bar';
 import CodeEditorSection from './components/codeeditor/code-editor-section';
 import NodeRenderer from './components/react-flow-renderer';
 import useCodeEditorStore from '@/stores/codeeditor';
+import useLoaderStore, { LOADER_TO_MAIN_CODE } from '@/stores/loader';
+import { MultiStepLoader } from '../ui/multi-step-loader';
 
 type Props = {}
 
@@ -159,11 +161,12 @@ export default function SchemaBoard({}: Props) {
     }
   ];
 
-  
+  const { mainCodeLoadingStep } = useLoaderStore();
   
   return (
     <div className='flex-1 relative flex'>
-      <div className={`flex-[3] relative transition-all ${mainCodeDiffMode && buffering ? "blur-sm" : ""}`}>
+      <div className={`flex-[3] relative transition-all`}>
+        {buffering ? <MultiStepLoader value={mainCodeLoadingStep} loading={buffering} loadingStates={LOADER_TO_MAIN_CODE} /> : null}
         <NodeRenderer 
           nodes={mockNodes}
           edges={iedges}

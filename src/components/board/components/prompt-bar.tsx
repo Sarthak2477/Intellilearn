@@ -12,6 +12,7 @@ import { generateSchemaFromPrompt } from "@/actions/schema-generator";
 
 import useCodeEditorStore from '@/stores/codeeditor';
 import useFlowStore from '@/stores/flow';
+import useLoaderStore, { ENUM__LOADER_TO_MAIN_CODE } from '@/stores/loader';
 
 type Props = {}
 
@@ -25,6 +26,7 @@ export default function PromptBar({}: Props) {
 
   const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, setDiffSchemaText , setMainCodeDiffMode } = useCodeEditorStore();
   const { setEditorOpen, codeEditorOpen } = useFlowStore();
+  const { setMainCodeLoadingValue } = useLoaderStore();
 
   async function handlePromptSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,10 +38,11 @@ export default function PromptBar({}: Props) {
 
     if ( !codeEditorOpen ) setEditorOpen(true);
     
+    setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.CONNECTING_TO_OPENAI); // Set to initial Value
     const response = await generateSchemaFromPrompt(prompt, isDiffMode ? mainSchemaText : undefined);
+    setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_SQL_CONTENT)
 
     if ( isDiffMode ) {
-      console.log(response);
       setDiffSchemaText((response as ChatCompletion).choices[0]?.message.content || "");
     } else {
       for await (const chunk of response as Stream<ChatCompletionChunk>) {
