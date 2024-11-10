@@ -77,7 +77,7 @@ const LoaderCore = ({
             <span
               className={cn(
                 "text-white",
-                value === index && "text-black dark:text-lime-500 opacity-100"
+                value === index && "dark:text-lime-500 opacity-100"
               )}
             >
               {loadingState.text}
@@ -115,7 +115,7 @@ export const MultiStepLoader = ({
           exit={{
             opacity: 0,
           }}
-          className="w-full h-full absolute inset-0 z-[100] flex items-center justify-center backdrop-blur-lg"
+          className="w-full h-full absolute inset-0 z-[100] flex items-end py-10 px-10 pointer-events-none"
         >
           <div className="h-96  relative">
             <LoaderCore value={value} loadingStates={loadingStates} />
