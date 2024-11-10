@@ -7,8 +7,6 @@ import useCodeEditorStore from '@/stores/codeeditor';
 
 type CodeEditorProps = {}
 
-
-
 export default function CodeEditor({}: CodeEditorProps) {
   const { 
     mainSchemaText,
