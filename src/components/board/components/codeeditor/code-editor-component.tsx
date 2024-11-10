@@ -4,7 +4,6 @@ import React from 'react'
 
 import { DiffEditor, Editor } from '@monaco-editor/react';
 import useCodeEditorStore from '@/stores/codeeditor';
-import { Button } from '@/components/ui/button';
 
 type CodeEditorProps = {}
 
@@ -16,13 +15,12 @@ export default function CodeEditor({}: CodeEditorProps) {
     buffering,
     diffSchemaText,
     mainCodeDiffMode,
-    clearMainSchemaText,
     clearDiffSchemaText,
     setMainCodeDiffMode,
     setMainSchemaText,
   } = useCodeEditorStore();
   
-  if ( mainCodeDiffMode ) {
+  if ( mainCodeDiffMode && !buffering ) {
     const handleCancelChanges = () => {
       clearDiffSchemaText();
       setMainCodeDiffMode(false); 
@@ -49,7 +47,7 @@ export default function CodeEditor({}: CodeEditorProps) {
           },
           fontFamily: "JetBrains Mono",
           readOnly: buffering,
-          inDiffEditor: true,
+          enableSplitViewResizing: true,
         }}
         beforeMount={monaco => {
           monaco.editor.defineTheme('custom-theme', {
@@ -88,7 +86,6 @@ export default function CodeEditor({}: CodeEditorProps) {
         },
         fontFamily: "JetBrains Mono",
         readOnly: buffering,
-        inDiffEditor: true,
       }}
       beforeMount={monaco => {
         monaco.editor.defineTheme('custom-theme', {

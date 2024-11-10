@@ -7,8 +7,10 @@ interface CodeEditorState {
   clearMainSchemaText: () => void;
 
   diffSchemaText: string;
+  setDiffSchemaText: (_:string) => void;
   addToDiffSchemaText: (_:string) => void;
   clearDiffSchemaText: () => void;
+
   mainCodeDiffMode: boolean; // For proposing changes
   setMainCodeDiffMode: (_:boolean) => void;
   
@@ -27,6 +29,7 @@ const useCodeEditorStore = create<CodeEditorState>()(set => ({
   
   diffSchemaText: "",
   addToDiffSchemaText: (newCharacter) => set(state => ({ diffSchemaText: state.diffSchemaText + newCharacter})),
+  setDiffSchemaText: (newSchemaText) => set(_ => ({ diffSchemaText: newSchemaText})),
   clearDiffSchemaText: () => set(_ => ({ diffSchemaText: ""})),
 
   mainCodeDiffMode: false,

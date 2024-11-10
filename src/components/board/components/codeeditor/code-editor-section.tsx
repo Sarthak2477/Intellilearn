@@ -46,7 +46,7 @@ export default function CodeEditorSection({}: Props) {
       <motion.div 
         className='relative' // Added relative
         animate={{
-          width: codeEditorOpen ? mainCodeDiffMode ? "65%" : "35%" : "0%"
+          width: codeEditorOpen ? mainCodeDiffMode && !buffering ? "65%" : "35%" : "0%"
         }}
         initial={{
           width: "0%"

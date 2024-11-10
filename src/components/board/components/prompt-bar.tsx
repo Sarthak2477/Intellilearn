@@ -1,10 +1,15 @@
+import React, { useState } from 'react'
+
 import { Meteors } from '@/components/global/meteors'
 import { Input } from '@/components/ui/input'
 import { LoaderCircle, Pickaxe, Zap } from 'lucide-react'
-import React, { useState } from 'react'
+
+import type { Stream } from 'openai/streaming.mjs';
+import type { ChatCompletion, ChatCompletionChunk } from 'openai/resources/index.mjs';
 
 // Server actions
 import { generateSchemaFromPrompt } from "@/actions/schema-generator";
+
 import useCodeEditorStore from '@/stores/codeeditor';
 import useFlowStore from '@/stores/flow';
 
@@ -18,7 +23,7 @@ export default function PromptBar({}: Props) {
 
   const [prompt, setPrompt] = useState("");
 
-  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, addToDiffSchemaText, setMainCodeDiffMode } = useCodeEditorStore();
+  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, setDiffSchemaText , setMainCodeDiffMode } = useCodeEditorStore();
   const { setEditorOpen, codeEditorOpen } = useFlowStore();
 
   async function handlePromptSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -31,12 +36,14 @@ export default function PromptBar({}: Props) {
 
     if ( !codeEditorOpen ) setEditorOpen(true);
     
-    const stream = await generateSchemaFromPrompt(prompt, isDiffMode ? mainSchemaText : undefined);
-    for await (const chunk of stream) {
-      if ( mainSchemaText.length <= 0 ) {
-        addToMainSchemaText(chunk.choices[0]?.delta?.content || "");
-      } else {
-        addToDiffSchemaText(chunk.choices[0]?.delta?.content || "");
+    const response = await generateSchemaFromPrompt(prompt, isDiffMode ? mainSchemaText : undefined);
+
+    if ( isDiffMode ) {
+      console.log(response);
+      setDiffSchemaText((response as ChatCompletion).choices[0]?.message.content || "");
+    } else {
+      for await (const chunk of response as Stream<ChatCompletionChunk>) {
+          addToMainSchemaText(chunk.choices[0]?.delta?.content || "");
       }
     }
     setBuffering(false);

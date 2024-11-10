@@ -2,13 +2,13 @@
 
 import PromptBar from './components/prompt-bar';
 import CodeEditorSection from './components/codeeditor/code-editor-section';
-import useFlowStore from '@/stores/flow';
 import NodeRenderer from './components/react-flow-renderer';
+import useCodeEditorStore from '@/stores/codeeditor';
 
 type Props = {}
 
 export default function SchemaBoard({}: Props) {
-  const { codeEditorOpen } = useFlowStore();
+  const { buffering, mainCodeDiffMode } = useCodeEditorStore();
   
   const mockNodes = [
     {
@@ -163,7 +163,7 @@ export default function SchemaBoard({}: Props) {
   
   return (
     <div className='flex-1 relative flex'>
-      <div className='flex-[3] relative'>
+      <div className={`flex-[3] relative transition-all ${mainCodeDiffMode && buffering ? "blur-sm" : ""}`}>
         <NodeRenderer 
           nodes={mockNodes}
           edges={iedges}

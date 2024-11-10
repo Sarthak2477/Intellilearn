@@ -32,7 +32,7 @@ export async function generateSchemaFromPrompt(prompt: string, previousPrompt?: 
     response_format: {
       "type": "text"
     },
-    stream: true,
+    stream: previousPrompt === undefined, // Don't stream on diff mode
   });
 
   return stream;
