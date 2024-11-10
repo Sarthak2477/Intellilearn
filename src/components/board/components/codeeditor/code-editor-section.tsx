@@ -9,6 +9,7 @@ import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/comp
 import CodeEditor from './code-editor-component';
 import { Tabs, TabsContent, TabsTrigger, TabsList } from '@/components/ui/tabs';
 import CodeEditorTab from './code-editor-tab';
+import useCodeEditorStore from '@/stores/codeeditor';
 
 type Props = {};
 
@@ -24,6 +25,7 @@ const TABS__DESCRIPTION: {[_:string]:string} = {
 
 export default function CodeEditorSection({}: Props) {
   const { toggleEditorOpen, codeEditorOpen } = useFlowStore();
+  const { diffSchemaText } = useCodeEditorStore();
   
   const [tab, setTab] = useState<string>(TABS__MAIN_SCHEMA);
   const handleTabChange = (value: string) => setTab(value);
@@ -44,7 +46,7 @@ export default function CodeEditorSection({}: Props) {
       <motion.div 
         className='relative' // Added relative
         animate={{
-          width: codeEditorOpen ? "35%" : "0%"
+          width: codeEditorOpen ? diffSchemaText.length > 0 ? "70%" : "35%" : "0%"
         }}
         initial={{
           width: "0%"

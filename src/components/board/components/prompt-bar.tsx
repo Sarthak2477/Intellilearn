@@ -17,15 +17,21 @@ export default function PromptBar({}: Props) {
 
   const [prompt, setPrompt] = useState("");
 
-  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering } = useCodeEditorStore();
+  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, addToDiffSchemaText } = useCodeEditorStore();
 
   async function handlePromptSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     
     setBuffering(true);
+
+    
     const stream = await generateSchemaFromPrompt(prompt);
     for await (const chunk of stream) {
-      addToMainSchemaText(chunk.choices[0]?.delta?.content || "");
+      if ( mainSchemaText.length <= 0 ) {
+        addToMainSchemaText(chunk.choices[0]?.delta?.content || "");
+      } else {
+        addToDiffSchemaText(chunk.choices[0]?.delta?.content || "");
+      }
     }
     setBuffering(false);
   }
