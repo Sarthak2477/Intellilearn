@@ -7,7 +7,7 @@ type CodeEditorProps = {}
 export default function CodeEditor({}: CodeEditorProps) {
   return (
     <Editor 
-      height="80vh"
+      height="70vh"
       language='sql'
       theme="custom-theme"
       options={{

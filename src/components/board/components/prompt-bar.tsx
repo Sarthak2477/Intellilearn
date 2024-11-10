@@ -16,7 +16,7 @@ export default function PromptBar({}: Props) {
     <div className='
       absolute 
       w-[32rem] min-h-14 
-      bottom-4 left-1/2 -translate-x-1/2 
+      bottom-12 left-1/2 -translate-x-1/2 
       bg-zinc-900 
       rounded-xl
 

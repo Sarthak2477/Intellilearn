@@ -6,7 +6,7 @@ interface FlowState {
 }
 
 const useFlowStore = create<FlowState>()(set => ({
-  codeEditorOpen: true,
+  codeEditorOpen: false,
   toggleEditorOpen: () => set(state => ({
     codeEditorOpen: !state.codeEditorOpen,
   })),
