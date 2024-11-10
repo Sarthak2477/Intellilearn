@@ -4,6 +4,8 @@ interface CodeEditorState {
   mainSchemaText: string;
   setMainSchemaText: (_:string) => void;
   addToMainSchemaText: (_:string) => void;
+  clearMainSchemaText: () => void;
+
   diffSchemaText: string;
   addToDiffSchemaText: (_:string) => void;
   clearDiffSchemaText: () => void;
@@ -18,6 +20,7 @@ const useCodeEditorStore = create<CodeEditorState>()(set => ({
   mainSchemaText: "",
   setMainSchemaText: (newSchemaText) => set(state => ({ mainSchemaText: newSchemaText})),
   addToMainSchemaText: (newCharacter) => set(state => ({ mainSchemaText: state.mainSchemaText + newCharacter})),
+  clearMainSchemaText: () => set(_ => ({ mainSchemaText: "" })),
   
   buffering: false,
   setBuffering: (val) => set(_ => ({ buffering: val })),

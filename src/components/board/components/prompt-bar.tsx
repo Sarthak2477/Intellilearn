@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 // Server actions
 import { generateSchemaFromPrompt } from "@/actions/schema-generator";
 import useCodeEditorStore from '@/stores/codeeditor';
+import useFlowStore from '@/stores/flow';
 
 type Props = {}
 
@@ -17,15 +18,20 @@ export default function PromptBar({}: Props) {
 
   const [prompt, setPrompt] = useState("");
 
-  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, addToDiffSchemaText } = useCodeEditorStore();
+  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, addToDiffSchemaText, setMainCodeDiffMode } = useCodeEditorStore();
+  const { setEditorOpen, codeEditorOpen } = useFlowStore();
 
   async function handlePromptSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     
     setBuffering(true);
 
+    const isDiffMode = mainSchemaText.length > 0;
+    setMainCodeDiffMode(isDiffMode);
+
+    if ( !codeEditorOpen ) setEditorOpen(true);
     
-    const stream = await generateSchemaFromPrompt(prompt);
+    const stream = await generateSchemaFromPrompt(prompt, isDiffMode ? mainSchemaText : undefined);
     for await (const chunk of stream) {
       if ( mainSchemaText.length <= 0 ) {
         addToMainSchemaText(chunk.choices[0]?.delta?.content || "");
@@ -34,6 +40,7 @@ export default function PromptBar({}: Props) {
       }
     }
     setBuffering(false);
+    setPrompt("");
   }
 
   return (
@@ -51,7 +58,7 @@ export default function PromptBar({}: Props) {
 
       overflow-hidden
     '>
-      <Meteors number={10} className=''/>
+      {/* <Meteors number={10} className=''/> */}
       {
         buffering ? <LoaderCircle size={18} className='text-zinc-700 animate-spin' /> : <Zap className='text-zinc-700' size={18} />
       }

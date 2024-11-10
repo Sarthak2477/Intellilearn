@@ -2,7 +2,7 @@
 
 import OpenAI from "openai";
 
-export async function generateSchemaFromPrompt(prompt: string) {
+export async function generateSchemaFromPrompt(prompt: string, previousPrompt?: string) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
@@ -21,7 +21,7 @@ export async function generateSchemaFromPrompt(prompt: string) {
       },
       {
         "role": "user",
-        "content": `Generate a SQL code based on this prompt: ${prompt}`
+        "content": `Generate a SQL code based on this prompt ${previousPrompt ? `and on the previous model ${previousPrompt}` : ""} : ${prompt}`
       }
     ],
     temperature: 1,

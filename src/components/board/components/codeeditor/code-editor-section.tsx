@@ -25,7 +25,7 @@ const TABS__DESCRIPTION: {[_:string]:string} = {
 
 export default function CodeEditorSection({}: Props) {
   const { toggleEditorOpen, codeEditorOpen } = useFlowStore();
-  const { diffSchemaText } = useCodeEditorStore();
+  const { mainCodeDiffMode, buffering } = useCodeEditorStore();
   
   const [tab, setTab] = useState<string>(TABS__MAIN_SCHEMA);
   const handleTabChange = (value: string) => setTab(value);
@@ -46,7 +46,7 @@ export default function CodeEditorSection({}: Props) {
       <motion.div 
         className='relative' // Added relative
         animate={{
-          width: codeEditorOpen ? diffSchemaText.length > 0 ? "70%" : "35%" : "0%"
+          width: codeEditorOpen ? mainCodeDiffMode ? "65%" : "35%" : "0%"
         }}
         initial={{
           width: "0%"
@@ -76,7 +76,7 @@ export default function CodeEditorSection({}: Props) {
 
           <Tabs value={tab} onValueChange={handleTabChange}>
             <TabsList className='bg-transparent gap-2 border-b-[1px] border-gray-500/40 pb-3 mb-3 rounded-none w-full justify-start'>
-              <CodeEditorTab value={TABS__MAIN_SCHEMA}>Schema</CodeEditorTab>
+              <CodeEditorTab value={TABS__MAIN_SCHEMA} loading={buffering}>Schema</CodeEditorTab>
               <CodeEditorTab value={TABS__DOCUMENTATION}>Documentation</CodeEditorTab>
             </TabsList>
             <TabsContent value={TABS__MAIN_SCHEMA}>
