@@ -10,12 +10,13 @@ import type { ChatCompletion, ChatCompletionChunk } from 'openai/resources/index
 // Server actions
 import { generateSchemaFromPrompt } from "@/actions/schema-generator";
 
-import useCodeEditorStore from '@/stores/codeeditor';
+import useInspectorStore from '@/stores/inspector';
 import useFlowStore from '@/stores/flow';
 import useLoaderStore, { ENUM__LOADER_TO_MAIN_CODE } from '@/stores/loader';
 import { generateFlowDataFromSchema } from '@/actions/flow-generator';
 import { TableNode } from '@/types/renderer';
 import { Edge } from '@xyflow/react';
+import { generateDocumentationFromSchema } from '@/actions/documentation-generator';
 
 type Props = {}
 
@@ -27,7 +28,7 @@ export default function PromptBar({}: Props) {
 
   const [prompt, setPrompt] = useState("");
 
-  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, setDiffSchemaText , setMainCodeDiffMode } = useCodeEditorStore();
+  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, setDiffSchemaText , setMainCodeDiffMode, addToDocumentationText } = useInspectorStore();
   const { setEditorOpen, codeEditorOpen, setFlowEdges, setFlowNodes } = useFlowStore();
   const { setMainCodeLoadingValue } = useLoaderStore();
 
@@ -65,11 +66,14 @@ export default function PromptBar({}: Props) {
       edges: Edge[],
     } = JSON.parse(response2.choices[0].message.content || "");
 
-    console.log(nodes);
-    console.log(edges);
-    
     setFlowNodes(nodes);
     setFlowEdges(edges);
+
+    setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_DOCUMENTATION_CONTENT);
+    const response3 = await generateDocumentationFromSchema(mainSchemaText);
+    for await (const chunk of response3 as Stream<ChatCompletionChunk>) {
+      addToDocumentationText(chunk.choices[0]?.delta?.content || "");
+    }
     
     setBuffering(false);
     setPrompt("");

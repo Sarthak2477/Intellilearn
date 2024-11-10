@@ -1,15 +1,18 @@
 "use client";
 
-import useFlowStore from '@/stores/flow';
 import { LoaderCircle, X } from 'lucide-react';
 import { motion, useScroll } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import CodeEditor from './code-editor-component';
 import { Tabs, TabsContent, TabsTrigger, TabsList } from '@/components/ui/tabs';
+
 import CodeEditorTab from './inspector-tab';
-import useCodeEditorStore from '@/stores/codeeditor';
+import CodeEditor from './code-editor';
+import DocumentationViewer from './documentation-viewer';
+
+import useFlowStore from '@/stores/flow';
+import useInspectorStore from '@/stores/inspector';
 
 type Props = {};
 
@@ -25,7 +28,7 @@ const TABS__DESCRIPTION: {[_:string]:string} = {
 
 export default function CodeEditorSection({}: Props) {
   const { toggleEditorOpen, codeEditorOpen } = useFlowStore();
-  const { mainCodeDiffMode, buffering } = useCodeEditorStore();
+  const { mainCodeDiffMode, buffering } = useInspectorStore();
   
   const [tab, setTab] = useState<string>(TABS__MAIN_SCHEMA);
   const handleTabChange = (value: string) => setTab(value);
@@ -84,7 +87,7 @@ export default function CodeEditorSection({}: Props) {
             </TabsContent>
 
             <TabsContent value={TABS__DOCUMENTATION}>
-              Documentation
+              <DocumentationViewer />
             </TabsContent>
 
           </Tabs>

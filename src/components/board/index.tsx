@@ -3,7 +3,7 @@
 import PromptBar from './components/prompt-bar';
 import CodeEditorSection from './components/inspector/inspector-section';
 import NodeRenderer from './components/react-flow-renderer';
-import useCodeEditorStore from '@/stores/codeeditor';
+import useInspectorStore from '@/stores/inspector';
 import useLoaderStore, { LOADER_TO_MAIN_CODE } from '@/stores/loader';
 import { MultiStepLoader } from '../ui/multi-step-loader';
 import useFlowStore from '@/stores/flow';
@@ -11,7 +11,7 @@ import useFlowStore from '@/stores/flow';
 type Props = {}
 
 export default function SchemaBoard({}: Props) {
-  const { buffering, mainCodeDiffMode } = useCodeEditorStore();
+  const { buffering, mainCodeDiffMode } = useInspectorStore();
   
   const mockNodes = [
     {

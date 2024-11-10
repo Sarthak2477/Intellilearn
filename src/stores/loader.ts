@@ -5,6 +5,7 @@ export enum ENUM__LOADER_TO_MAIN_CODE {
   CONNECTING_TO_OPENAI,
   GENERATING_SQL_CONTENT,
   GENERATING_FLOW_CONTENT,
+  GENERATING_DOCUMENTATION_CONTENT,
   COMPLETE,
 }
 
@@ -17,6 +18,9 @@ export const LOADER_TO_MAIN_CODE: LoadingState[] = [
   },
   {
     text: "Generating flow diagram for the solution",
+  },
+  {
+    text: "Generating documentation",
   },
   {
     text: "Complete",

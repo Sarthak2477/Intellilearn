@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface CodeEditorState {
+interface InspectorState {
   mainSchemaText: string;
   setMainSchemaText: (_:string) => void;
   addToMainSchemaText: (_:string) => void;
@@ -16,9 +16,13 @@ interface CodeEditorState {
   
   buffering: boolean;
   setBuffering: (_:boolean) => void;
+
+  documentationText: string;
+  setDocumentationText: (_: string) => void;
+  addToDocumentationText: (_:string) => void;
 }
 
-const useCodeEditorStore = create<CodeEditorState>()(set => ({
+const useInspectorStore = create<InspectorState>()(set => ({
   mainSchemaText: "",
   setMainSchemaText: (newSchemaText) => set(state => ({ mainSchemaText: newSchemaText})),
   addToMainSchemaText: (newCharacter) => set(state => ({ mainSchemaText: state.mainSchemaText + newCharacter})),
@@ -34,6 +38,10 @@ const useCodeEditorStore = create<CodeEditorState>()(set => ({
 
   mainCodeDiffMode: false,
   setMainCodeDiffMode: (val) => set(_ => ({ mainCodeDiffMode: val})),
+
+  documentationText: "",
+  setDocumentationText: (newDocumentationText) => set(_ => ({ documentationText: newDocumentationText })),
+  addToDocumentationText: (newCharacter) => set(state => ({ documentationText: state.documentationText + newCharacter})),
 }));
 
-export default useCodeEditorStore;
+export default useInspectorStore;

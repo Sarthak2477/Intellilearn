@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react'
 
 import { DiffEditor, Editor } from '@monaco-editor/react';
-import useCodeEditorStore from '@/stores/codeeditor';
+import useInspectorStore from '@/stores/inspector';
 
 type CodeEditorProps = {}
 
@@ -16,7 +16,7 @@ export default function CodeEditor({}: CodeEditorProps) {
     clearDiffSchemaText,
     setMainCodeDiffMode,
     setMainSchemaText,
-  } = useCodeEditorStore();
+  } = useInspectorStore();
   
   if ( mainCodeDiffMode && !buffering ) {
     const handleCancelChanges = () => {

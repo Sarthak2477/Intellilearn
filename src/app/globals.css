@@ -8,6 +8,11 @@ body {
   color: white;
 }
 
+/* For React Markdown rendering problems because of Tailwind override default CSS properties */
+.markdown > * {
+  all: revert;
+}
+
 @layer base {
   :root {
     /* Custom Variables */
