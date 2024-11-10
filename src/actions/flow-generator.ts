@@ -24,9 +24,6 @@ export async function generateFlowDataFromSchema(schema: string) {
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
-    response_format: {
-      "type": "text"
-    },
   });
 
   return response;

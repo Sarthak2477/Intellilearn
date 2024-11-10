@@ -43,7 +43,6 @@ export default function NodeRenderer({
   useEffect(() => {
     setNodes(i__nodes);
     setEdges(i__edges);
-    handleAutoLayout();
   }, [i__nodes, i__edges]);
 
   const getNodeDimensions = (node: TableNode) => ({
@@ -88,12 +87,17 @@ export default function NodeRenderer({
     } catch (error) {
       console.error('Layout calculation failed:', error);
     }
+
   }, [nodes, edges, setNodes]);
   
   // Auto layout items in the beggining
   useEffect(() => {
     handleAutoLayout();
   }, []);
+
+  useEffect(() => {
+    handleAutoLayout();
+  }, [nodes, edges])
 
   return (
     <>
