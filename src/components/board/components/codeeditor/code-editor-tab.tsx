@@ -1,3 +1,5 @@
+"use client";
+
 import { TabsTrigger } from '@/components/ui/tabs';
 import { LoaderCircle } from 'lucide-react';
 import React from 'react'

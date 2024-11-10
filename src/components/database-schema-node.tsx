@@ -78,7 +78,7 @@ export function DatabaseSchemaNode({
                 title={entry.title}
                 type="target"
                 position={Position.Left}
-                labelClassName="text-zinc-300/90"
+                labelclassName="text-zinc-300/90"
               />
             </div>
             <div className="relative py-3 pr-0 text-right font-mono">
@@ -91,8 +91,8 @@ export function DatabaseSchemaNode({
                 type="source"
                 position={Position.Right}
                 className="p-0 text-blue-400"
-                handleClassName="p-0"
-                labelClassName={`p-0 font-bold`}
+                handleclassname="p-0"
+                labelclassName={`p-0 font-bold`}
               />
             </div>
           </div>

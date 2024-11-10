@@ -1,7 +1,11 @@
 import { Meteors } from '@/components/global/meteors'
 import { Input } from '@/components/ui/input'
-import { Pickaxe, Zap } from 'lucide-react'
-import React from 'react'
+import { LoaderCircle, Pickaxe, Zap } from 'lucide-react'
+import React, { useState } from 'react'
+
+// Server actions
+import { generateSchemaFromPrompt } from "@/actions/schema-generator";
+import useCodeEditorStore from '@/stores/codeeditor';
 
 type Props = {}
 
@@ -10,10 +14,26 @@ export default function PromptBar({}: Props) {
     Prompt Bar
     Takes in text input and sends the prompt to OpenAI API to get schema response to process later.
   */
-  
-  return (
+
+  const [prompt, setPrompt] = useState("");
+
+  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering } = useCodeEditorStore();
+
+  async function handlePromptSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     
-    <div className='
+    setBuffering(true);
+    const stream = await generateSchemaFromPrompt(prompt);
+    for await (const chunk of stream) {
+      addToMainSchemaText(chunk.choices[0]?.delta?.content || "");
+    }
+    setBuffering(false);
+  }
+
+  return (
+    <form 
+    onSubmit={handlePromptSubmit}
+    className='
       absolute 
       w-[32rem] min-h-14 
       bottom-12 left-1/2 -translate-x-1/2 
@@ -26,8 +46,12 @@ export default function PromptBar({}: Props) {
       overflow-hidden
     '>
       <Meteors number={10} className=''/>
-      <Zap className='text-zinc-700' size={18} />
+      {
+        buffering ? <LoaderCircle size={18} className='text-zinc-700 animate-spin' /> : <Zap className='text-zinc-700' size={18} />
+      }
       <Input 
+        value={prompt}
+        onChange={e => setPrompt(e.target.value)}
         className='peer border-0 focus-visible:ring-0 placeholder:text-zinc-500 text-zinc-500 py-3 !text-xs' 
         placeholder='Your prompt goes here....'
       />
@@ -51,6 +75,7 @@ export default function PromptBar({}: Props) {
         '>
         <Pickaxe size={18} />
       </div>
-    </div>
+      <span className="absolute bottom-[2px] left-11 text-[9px] text-zinc-500">{ prompt.length > 0 && `${prompt.length} characters` }</span>
+    </form>
   )
 }
