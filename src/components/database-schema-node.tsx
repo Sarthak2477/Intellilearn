@@ -1,6 +1,7 @@
 import { Node, NodeProps, Position } from "@xyflow/react";
 import { BaseNode } from "@/components/base-node";
 import { LabeledHandle } from "@/components/labeled-handle";
+import useInspectorStore from "@/stores/inspector";
 
 type DatabaseSchemaNode = Node<{
   label: string;
@@ -56,13 +57,14 @@ const getTypeColor = (type: string): string => {
   return typeColor[normalizedType] || typeColor.default;
 };
 
-
 export function DatabaseSchemaNode({
   data,
   selected,
 }: NodeProps<DatabaseSchemaNode>) {
+  const { mainCodeDiffMode } = useInspectorStore();
+  
   return (
-    <BaseNode className="p-0 bg-zinc-800 min-w-[200px]" selected={selected}>
+    <BaseNode className={`p-0 bg-zinc-800 min-w-[200px] ${mainCodeDiffMode ? "animate-pulse ease-out ring-2 ring-white" : ""}`} selected={selected}>
       <h2 className="rounded-tl-md rounded-tr-md bg-zinc-900 p-2 text-center text-sm text-white font-bold">
         {data.label}
       </h2>

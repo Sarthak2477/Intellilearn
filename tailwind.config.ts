@@ -68,6 +68,7 @@ export default {
 		animation: {
 			"meteor-effect": "meteor 5s linear infinite",
 			"spin": "spin 1s linear infinite",
+			"pulse": "pulse 2s linear infinite",
 		},
 		keyframes: {
 			meteor: {
@@ -84,6 +85,17 @@ export default {
 				},
 				"100%" : {
 					transform: "rotate(360deg)",
+				},
+			},
+			pulse: {
+				"0%" : {
+					opacity: "1",
+				},
+				"50%" : {
+					opacity: ".6",
+				},
+				"100%" : {
+					opacity: "1",
 				},
 			},
 		},

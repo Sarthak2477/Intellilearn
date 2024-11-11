@@ -24,6 +24,7 @@ export default function CodeEditor({}: CodeEditorProps) {
     setFlowNodes,
     setFlowEdges,
     flowNodes,
+    flowEdges,
   } = useFlowStore();
   
   const handleCodeChange = (value: string | undefined) => {
@@ -52,6 +53,7 @@ export default function CodeEditor({}: CodeEditorProps) {
     const handleCancelChanges = () => {
       clearDiffSchemaText();
       setMainCodeDiffMode(false); 
+      handleCodeChange(mainSchemaText);
     }
 
     const handleAcceptChanges = () => {

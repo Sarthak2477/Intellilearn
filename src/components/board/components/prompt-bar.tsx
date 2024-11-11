@@ -55,7 +55,9 @@ export default function PromptBar({}: Props) {
 
     var schemaText_ = "";
     if ( isDiffMode ) {
-      setDiffSchemaText((response as ChatCompletion).choices[0]?.message.content || "");
+      const suggestedResponse = (response as ChatCompletion).choices[0]?.message.content || "";
+      setDiffSchemaText(suggestedResponse);
+      schemaText_ = suggestedResponse;
     } else {
       for await (const chunk of response as Stream<ChatCompletionChunk>) {
           addToMainSchemaText(chunk.choices[0]?.delta?.content || "");

@@ -14,6 +14,7 @@ import { TableNode } from '@/types/renderer';
 
 import '@xyflow/react/dist/style.css';
 import '../css/board.css';
+import useInspectorStore from '@/stores/inspector';
 
 
 const elk = new ELK();
@@ -38,6 +39,8 @@ export default function NodeRenderer({
 }: NodeRendererProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState(i__nodes);
   const [edges, setEdges] = useEdgesState(i__edges);
+
+  const { mainCodeDiffMode } = useInspectorStore();
 
   // Assign nodes and edge and auto layout them
   useEffect(() => {
@@ -95,7 +98,7 @@ export default function NodeRenderer({
   // Auto layout items in the beggining
   useEffect(() => {
     handleAutoLayout(nodes, edges);
-  }, []);
+  });
 
   return (
     <>
