@@ -1,5 +1,5 @@
 import useInspectorStore from '@/stores/inspector';
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
