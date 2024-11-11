@@ -20,10 +20,13 @@ export async function generateFlowDataFromSchema(schema: string) {
       }
     ],
     temperature: 1,
-    max_tokens: 2048,
+    max_tokens: 5000,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
+    response_format: {
+      "type": "json_object"
+    },
   });
 
   return response;

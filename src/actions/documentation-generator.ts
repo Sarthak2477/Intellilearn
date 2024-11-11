@@ -20,10 +20,13 @@ export async function generateDocumentationFromSchema(schema: string) {
       }
     ],
     temperature: 1,
-    max_tokens: 5000,
+    max_tokens: 6983,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
+    response_format: {
+      "type" : "text"
+    },
   });
 
   return response.choices[0].message.content ?? "";
