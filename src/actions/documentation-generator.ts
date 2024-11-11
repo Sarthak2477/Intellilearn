@@ -24,8 +24,7 @@ export async function generateDocumentationFromSchema(schema: string) {
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
-    stream: true,
   });
 
-  return response;
+  return response.choices[0].message.content ?? "";
 }

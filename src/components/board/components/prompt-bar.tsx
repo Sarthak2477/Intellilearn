@@ -30,7 +30,7 @@ export default function PromptBar({}: Props) {
 
   const [prompt, setPrompt] = useState("");
 
-  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, setDiffSchemaText , setMainCodeDiffMode, addToDocumentationText } = useInspectorStore();
+  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, setDiffSchemaText , setMainCodeDiffMode, setDocumentationText } = useInspectorStore();
   const { setEditorOpen, codeEditorOpen, setFlowEdges, setFlowNodes } = useFlowStore();
   const { setMainCodeLoadingValue } = useLoaderStore();
 
@@ -79,14 +79,22 @@ export default function PromptBar({}: Props) {
     setFlowEdges(edges);
 
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_DOCUMENTATION_CONTENT);
-    // const response3 = await generateDocumentationFromSchema(mainSchemaText);
-    // for await (const chunk of response3 as Stream<ChatCompletionChunk>) {
-    //   addToDocumentationText(chunk.choices[0]?.delta?.content || "");
-    // }
+    if ( !isDiffMode ) {
+      const response3 = await generateDocumentationFromSchema(mainSchemaText);
 
-    sleep(2000);
+      const cleanedResponse = response3
+        .replace(/```markdown/g, '')  // Remove ```markdown
+        .replace(/```/g, ''); // Remove ``` at the end
+      
+      setDocumentationText(cleanedResponse);
+      // for await (const chunk of response3 as Stream<ChatCompletionChunk>) {
+      //   addToDocumentationText(chunk.choices[0]?.delta?.content || "");
+      // }
+    }
+
+    await sleep(2000);
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.COMPLETE);
-    sleep(1500);
+    await sleep(1500);
     
     setBuffering(false);
     setPrompt("");

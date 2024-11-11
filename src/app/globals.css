@@ -13,6 +13,54 @@ body {
   all: revert;
 }
 
+.markdown a {
+  color: greenyellow;
+  text-decoration: underline;
+}
+
+.markdown h1 {
+  color: hotpink;
+}
+
+.markdown h2 {
+  color: aquamarine;
+}
+
+.markdown code {
+  background-color: #333;
+  padding: 0px 5px;
+  border-radius: 5px;
+}
+
+.markdown table {
+  border: 1px solid gray;
+  border-radius: 4px;
+  margin: 0px 6px;
+  font-size: 13px;
+  font-family: "JetBrains Mono", monospace;
+
+  border-spacing: 5px;
+  border-collapse: separate;
+}
+
+.markdown thead {
+  background-color: #434343;
+}
+
+::-webkit-scrollbar {
+  width: 6px; /* Set the width of the scrollbar */
+  height: 6px; /* Set the height for horizontal scrollbars (optional) */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #fff; /* Set the color of the thumb */
+  border-radius: 10px; /* Optional: Make the thumb corners rounded */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Optional: Make the track transparent */
+}
+
 #monacodiv div, #monacoDiffEditor div {
   font-family: monospace;
   font-size: unset;

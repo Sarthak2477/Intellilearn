@@ -7,13 +7,7 @@ import remarkGfm from "remark-gfm";
 type Props = {}
 
 export default function DocumentationViewer({}: Props) {
-  const { documentationText, mainSchemaText, buffering } = useInspectorStore();
-
-  if ( buffering ) {
-    return <div className='h-[72vh]'>
-      { documentationText }
-    </div>
-  }
+  const { documentationText } = useInspectorStore();
 
   return (
     <div className='h-[72vh] overflow-auto'>
