@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
       }
     ],
     temperature: 1,
-    max_tokens: 2048,
+    max_tokens: 5000,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
