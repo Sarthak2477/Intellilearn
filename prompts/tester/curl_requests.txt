@@ -1,0 +1,26 @@
+#request with good schema
+curl -X POST http://localhost:8080/test \
+     -H "Content-Type: application/json" \
+     -d '{
+           "schema": "CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT NOT NULL, email TEXT UNIQUE NOT NULL);",
+           "mock_data": [
+               {"name": "Alice Smith", "email": "alice@example.com"},
+               {"name": "Bob Johnson", "email": "bob@example.com"},
+               {"name": "Charlie Brown", "email": "charlie@example.com"}
+           ]
+         }' | jq
+
+
+
+#request with bad schema
+curl -X POST http://localhost:8080/test \
+     -H "Content-Type: application/json" \
+     -d '{
+           "schema": "CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXXT NOT NULL, email TEXT UNIQUE NOT NULL);",
+           "mock_data": [
+               {"name": "Alice Smith", "email": "alice@example.com"},
+               {"name": "Bob Johnson", "email": "bob@example.com"},
+               {"name": "Charlie Brown", "email": "charlie@example.com"}
+           ]
+         }' | jq
+
