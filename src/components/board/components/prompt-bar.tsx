@@ -17,6 +17,7 @@ import { generateFlowDataFromSchema } from '@/actions/flow-generator';
 import { TableNode } from '@/types/renderer';
 import { Edge } from '@xyflow/react';
 import { generateDocumentationFromSchema } from '@/actions/documentation-generator';
+import SQLToReactFlowParser from '@/lib/react-flow-parser';
 
 type Props = {}
 
@@ -51,29 +52,36 @@ export default function PromptBar({}: Props) {
 
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_SQL_CONTENT)
 
+    var schemaText_ = "";
     if ( isDiffMode ) {
       setDiffSchemaText((response as ChatCompletion).choices[0]?.message.content || "");
     } else {
       for await (const chunk of response as Stream<ChatCompletionChunk>) {
           addToMainSchemaText(chunk.choices[0]?.delta?.content || "");
+          schemaText_ += chunk.choices[0]?.delta?.content || "";
       }
     }
 
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_FLOW_CONTENT);
-    const response2 = await generateFlowDataFromSchema(mainSchemaText);
-    const { nodes, edges } : {
-      nodes: TableNode[],
-      edges: Edge[],
-    } = JSON.parse(response2.choices[0].message.content || "");
+    // const response2 = await generateFlowDataFromSchema(mainSchemaText);
+    // const { nodes, edges } : {
+    //   nodes: TableNode[],
+    //   edges: Edge[],
+    // } = JSON.parse(response2.choices[0].message.content || "");
+
+    const parser = new SQLToReactFlowParser();
+    const { nodes, edges } = parser.parse(schemaText_);
 
     setFlowNodes(nodes);
     setFlowEdges(edges);
 
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_DOCUMENTATION_CONTENT);
-    const response3 = await generateDocumentationFromSchema(mainSchemaText);
-    for await (const chunk of response3 as Stream<ChatCompletionChunk>) {
-      addToDocumentationText(chunk.choices[0]?.delta?.content || "");
-    }
+    // const response3 = await generateDocumentationFromSchema(mainSchemaText);
+    // for await (const chunk of response3 as Stream<ChatCompletionChunk>) {
+    //   addToDocumentationText(chunk.choices[0]?.delta?.content || "");
+    // }
+
+    await new Promise((r,_) => setTimeout(r, 1000));
     
     setBuffering(false);
     setPrompt("");

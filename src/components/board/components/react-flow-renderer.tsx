@@ -43,6 +43,8 @@ export default function NodeRenderer({
   useEffect(() => {
     setNodes(i__nodes);
     setEdges(i__edges);
+
+    handleAutoLayout(i__nodes, i__edges);
   }, [i__nodes, i__edges]);
 
   const getNodeDimensions = (node: TableNode) => ({
@@ -50,7 +52,7 @@ export default function NodeRenderer({
     height: 50 + node.data.schema.length * 30
   });
 
-  const handleAutoLayout = useCallback(async () => {
+  const handleAutoLayout = useCallback(async (nodes: TableNode[], edges: Edge[]) => {
     const elkGraph = {
       id: "root",
       children: nodes.map((node) => ({
@@ -92,12 +94,8 @@ export default function NodeRenderer({
   
   // Auto layout items in the beggining
   useEffect(() => {
-    handleAutoLayout();
+    handleAutoLayout(nodes, edges);
   }, []);
-
-  useEffect(() => {
-    handleAutoLayout();
-  }, [nodes, edges])
 
   return (
     <>
@@ -121,7 +119,7 @@ export default function NodeRenderer({
               <Button
                 asChild
                 variant="secondary"
-                onClick={handleAutoLayout}
+                onClick={() => handleAutoLayout(nodes, edges)}
                 className="px-3 py-2 rounded-md flex items-center justify-center gap-2"
               >
                 <div>

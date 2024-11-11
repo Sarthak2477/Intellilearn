@@ -1,5 +1,5 @@
-import { UserButton } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
+// import { UserButton } from "@clerk/nextjs";
+// import { dark } from "@clerk/themes";
 
 import Image from "next/image";
 
@@ -16,9 +16,9 @@ export default function NavigationBar({}: Props) {
         </div>
       </div>
       <div className="px-2 py-1 border-[1px] border-gray-800 rounded-lg">
-        <UserButton userProfileMode="modal" showName appearance={{
+        {/* <UserButton userProfileMode="modal" showName appearance={{
           baseTheme: dark,
-        }}/>
+        }}/> */}
       </div>
     </div>
   );
