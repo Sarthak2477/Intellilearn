@@ -46,7 +46,7 @@ export default function CodeEditorSection({}: Props) {
         onMouseEnter={toggleEditorOpen}
         className='absolute h-[100%] w-4 right-0 top-1/2 -translate-y-1/2' />
     
-      {/* <motion.div 
+      <motion.div 
         className='relative' // Added relative
         animate={{
           width: codeEditorOpen ? mainCodeDiffMode && !buffering ? "65%" : "40%" : "0%"
@@ -58,12 +58,7 @@ export default function CodeEditorSection({}: Props) {
               duration: 0.3,
               ease: "easeInOut"
               }}
-              > */}
-      <div
-        style={{
-          width: codeEditorOpen ? mainCodeDiffMode && !buffering ? "65%" : "40%" : "0%"
-        }}
-      >
+              >
         <div className={`p-4 flex flex-col`}>
           <div className='flex justify-between items-center px-2 mb-4'>
             <div className='flex flex-col'>
@@ -97,8 +92,7 @@ export default function CodeEditorSection({}: Props) {
 
           </Tabs>
         </div>
-      </div>
-      {/* </motion.div> */}
+      </motion.div>
     </>
   );
 }

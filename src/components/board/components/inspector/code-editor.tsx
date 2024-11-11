@@ -4,6 +4,8 @@ import React, { useEffect } from 'react'
 
 import { DiffEditor, Editor } from '@monaco-editor/react';
 import useInspectorStore from '@/stores/inspector';
+import useFlowStore from '@/stores/flow';
+import SQLToReactFlowParser from '@/lib/react-flow-parser';
 
 type CodeEditorProps = {}
 
@@ -17,6 +19,34 @@ export default function CodeEditor({}: CodeEditorProps) {
     setMainCodeDiffMode,
     setMainSchemaText,
   } = useInspectorStore();
+
+  const {
+    setFlowNodes,
+    setFlowEdges,
+    flowNodes,
+  } = useFlowStore();
+  
+  const handleCodeChange = (value: string | undefined) => {
+    // Don't update flow chart when streaming
+    if ( !buffering && mainSchemaText ) {
+      const parser = new SQLToReactFlowParser();
+      const { nodes, edges } = parser.parse(value || "");
+
+      setMainSchemaText(value || "");
+      setFlowNodes(nodes.map(node => {
+        const correspondingNode = nodes.find(n => n.id === node.id);
+        if ( correspondingNode ) {
+          return {
+            ...node,
+            position: correspondingNode.position,
+          }
+        }
+        
+        return node;
+      }));
+      setFlowEdges(edges);
+    }
+  }
   
   if ( mainCodeDiffMode && !buffering ) {
     const handleCancelChanges = () => {
@@ -75,6 +105,7 @@ export default function CodeEditor({}: CodeEditorProps) {
   return (
     <Editor 
       value={mainSchemaText || ""}
+      onChange={handleCodeChange}
       height="70vh"
       language="sql"
       theme="custom-theme"
@@ -82,7 +113,7 @@ export default function CodeEditor({}: CodeEditorProps) {
         minimap: {
           enabled: false,
         },
-        fontFamily: "JetBrains Mono",
+        // fontFamily: "JetBrains Mono",
         readOnly: buffering,
       }}
       beforeMount={monaco => {

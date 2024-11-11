@@ -18,6 +18,7 @@ import { TableNode } from '@/types/renderer';
 import { Edge } from '@xyflow/react';
 import { generateDocumentationFromSchema } from '@/actions/documentation-generator';
 import SQLToReactFlowParser from '@/lib/react-flow-parser';
+import { sleep } from '@/lib/utils';
 
 type Props = {}
 
@@ -81,7 +82,9 @@ export default function PromptBar({}: Props) {
     //   addToDocumentationText(chunk.choices[0]?.delta?.content || "");
     // }
 
-    await new Promise((r,_) => setTimeout(r, 1000));
+    sleep(2000);
+    setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.COMPLETE);
+    sleep(1500);
     
     setBuffering(false);
     setPrompt("");
