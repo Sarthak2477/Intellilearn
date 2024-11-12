@@ -5,6 +5,9 @@ import OpenAI from "openai";
 import engineeredPrompt from "@/prompts/prompt-prisma";
 import type { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
+export const maxDuration = 30;
+
+
 export async function generatePrismaModelFromSchema(schema: string) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
