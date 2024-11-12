@@ -116,8 +116,8 @@ const SelectItem = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item> & {
     descriptor: string,
   }
->(({ className, children, descriptor, ...props }, ref) => (
-  <SelectPrimitive.Item
+>(({ className, children, descriptor, ...props }, ref) => {
+  return <SelectPrimitive.Item
     ref={ref}
     className={cn(
       "relative flex flex-col items-start w-full cursor-default select-none rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
@@ -130,12 +130,12 @@ const SelectItem = React.forwardRef<
         <Check className="h-4 w-4" />
       </SelectPrimitive.ItemIndicator>
     </span>
-    <SelectPrimitive.ItemText className="flex flex-col items-center">
+    <SelectPrimitive.ItemText className="flex flex-row gap-2 items-center">
       { children }
     </SelectPrimitive.ItemText>
     <span className="text-[9px] text-gray-700">{ descriptor }</span>
   </SelectPrimitive.Item>
-))
+})
 SelectItem.displayName = SelectPrimitive.Item.displayName
 
 const SelectSeparator = React.forwardRef<

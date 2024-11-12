@@ -13,7 +13,7 @@ import DocumentationViewer from './documentation-viewer';
 
 import useFlowStore from '@/stores/flow';
 import useInspectorStore from '@/stores/inspector';
-import MockDataGeneration from './mock-data-generation';
+import MockDataGenerationSection from './mock-data-generation';
 import ExportSchemaToORMSection from './export';
 
 type Props = {};
@@ -101,7 +101,7 @@ export default function CodeEditorSection({}: Props) {
             </TabsContent>
 
             <TabsContent value={TABS__MOCK_DATA}>
-              <MockDataGeneration />
+              <MockDataGenerationSection />
             </TabsContent>
 
             <TabsContent value={TABS__EXPORT}>
