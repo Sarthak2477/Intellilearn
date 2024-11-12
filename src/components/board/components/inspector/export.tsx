@@ -1,11 +1,13 @@
 import React, { FormEvent, useState } from 'react'
 import { ChatCompletionChunk } from 'openai/resources/index.mjs';
 import { Stream } from 'openai/streaming.mjs';
+import MonacoEditor from "@monaco-editor/react";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import useInspectorStore from '@/stores/inspector';
 import { generateDjangoModelFromSchema } from '@/actions/django-export-generator';
-import MonacoEditor from "@monaco-editor/react";
+import { generatePrismaModelFromSchema } from '@/actions/prisma-export-generator';
+import prismaTokenizer from '@/lib/prisma-tokenizer';
 
 type ExportOptions = "django" | "prisma" | "eloquent" | "drizzle";
 
@@ -26,13 +28,17 @@ export default function ExportSchemaToORMSection() {
     setOutput("");
     setExporting(true);
     
-    if ( exportOption === "django" ) {
-      const stream = await generateDjangoModelFromSchema(mainSchemaText);
-      
-      for await (const chunk of stream as Stream<ChatCompletionChunk>) {
-        const data = chunk.choices[0]?.delta.content;
-        setOutput(explanation => explanation + (data !== undefined ? data : ""));
-      }
+    let stream;
+    
+    if ( exportOption === "django" )
+      stream = await generateDjangoModelFromSchema(mainSchemaText);
+    else if ( exportOption === "prisma" )
+      stream = await generatePrismaModelFromSchema(mainSchemaText);
+    else return;
+
+    for await (const chunk of stream as Stream<ChatCompletionChunk>) {
+      const data = chunk.choices[0]?.delta.content;
+      setOutput(explanation => explanation + (data !== undefined ? data : ""));
     }
     setExporting(false);
   }
@@ -70,7 +76,7 @@ export default function ExportSchemaToORMSection() {
             enabled: false,
           },
           fontFamily: "JetBrains Mono",
-          fontSize: 12,
+          fontSize: 13,
         }}
         beforeMount={monaco => {
           monaco.editor.defineTheme('custom-theme', {
@@ -81,6 +87,10 @@ export default function ExportSchemaToORMSection() {
               'editor.background': '#00000000',
             },
           });
+
+          // Added prisma support
+          monaco.languages.register({ id: 'prisma' })
+          monaco.languages.setMonarchTokensProvider('prisma', prismaTokenizer as any)
 
         }}
         keepCurrentModel={true}
