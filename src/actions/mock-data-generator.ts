@@ -20,7 +20,7 @@ export async function generateMockDataFromSchema(schema: string, numOfRows: numb
       }
     ],
     temperature: 1,
-    max_tokens: 1000 * numOfRows,
+    max_tokens: 2000 * numOfRows,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
