@@ -37,7 +37,7 @@ body {
   border-radius: 5px;
 }
 
-.markdown table {
+.markdown table, .custom-table table {
   border: 1px solid gray;
   border-radius: 4px;
   margin: 0px 6px;
@@ -48,7 +48,7 @@ body {
   border-collapse: separate;
 }
 
-.markdown thead {
+.markdown thead, .custom-table thead {
   background-color: #434343;
 }
 

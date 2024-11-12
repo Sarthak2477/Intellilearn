@@ -3,13 +3,12 @@ import useInspectorStore from '@/stores/inspector';
 import React, { useState } from 'react'
 
 import SSCSVParser from '@/lib/sscsv-parser';
+import MockDataResult from './mock-data/mock-data-result';
 
 export default function MockDataGeneration() {
   // const [ ]
   const [ loading, setLoading ] = useState();
-  const [ mockData, setMockData ] = useState<{
-    [_:string]: any,
-  } | null>(null); 
+  const [ mockData, setMockData ] = useState<object | null>(null); 
 
   const { mainSchemaText } = useInspectorStore();
   
@@ -18,7 +17,7 @@ export default function MockDataGeneration() {
 
     const parser = new SSCSVParser();
     const parsedData = parser.parse(response);
-    console.log(parsedData);
+    setMockData(parsedData.data);
   }
   
   return (
@@ -27,7 +26,9 @@ export default function MockDataGeneration() {
         className='px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold'
         onClick={getMockData}
       >Generate</button>
-      
+      {
+        mockData && <MockDataResult data={mockData as {[_:string]:object[]}} />
+      }
     </div>
   );
 }
