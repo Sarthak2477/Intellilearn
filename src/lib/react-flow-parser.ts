@@ -1,6 +1,6 @@
 
 import type { TableNode } from "@/types/renderer";
-import type { Edge } from "@xyflow/react";
+import { type Edge } from "@xyflow/react";
 import { cleanSQL } from "./utils";
 
 interface SchemaField {

@@ -105,7 +105,7 @@ export function DatabaseSchemaNode({
                   {
                     // @ts-ignore
                     entry.is_pk && (
-                      <KeySquare className="text-yellow-500" size={16}/>
+                      <KeySquare className="text-yellow-500 mr-2" size={16}/>
                     )
                   }
                   {
