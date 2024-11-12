@@ -7,15 +7,21 @@ import MockDataResult from './mock-data/mock-data-result';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { LoaderCircle } from 'lucide-react';
 
+import MonacoEditor from "@monaco-editor/react";
+
+type MockDataOutputConfig = "JSON" | "Table";
+
 export default function MockDataGeneration() {
   // const [ ]
   const [ loading, setLoading ] = useState(false);
   const [ mockData, setMockData ] = useState<object | null>(null); 
   const [ numOfRows, setNumOfRows ] = useState<number | null>(null);
+  const [ mockDataOutput, setMockDataOutput ] = useState<MockDataOutputConfig>("Table");
 
   const { mainSchemaText } = useInspectorStore();
   
   const handleNumOfRowsSelect = (val: string) => setNumOfRows(parseInt(val));
+  const handleMockDataOutputOptionSelect = (val: MockDataOutputConfig) => setMockDataOutput(val);
   
   async function getMockData(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,24 +42,64 @@ export default function MockDataGeneration() {
   </div>
   
   return (
-    <div className=''>
-      <form onSubmit={getMockData} className='flex items-center gap-2'>
-        <Select value={numOfRows?.toString()} onValueChange={handleNumOfRowsSelect}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Number of Rows" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem defaultChecked defaultValue="5" value="5" descriptor="Ideal for accuracy of your schema.">5 rows</SelectItem>
-            <SelectItem value="10" descriptor="Ideal for using in other applications.">10 rows</SelectItem>
-            <SelectItem value="20" descriptor="Not recommended. Uses a lot of tokens.">20 rows</SelectItem>
-          </SelectContent>
-        </Select>
-        <button 
-          className='px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs'
-        >{mockData ? "Regenerate" : "Generate"}</button>
-      </form>
+    <div className='h-full space-y-2'>
+      <div className='flex items-center justify-between'>
+        <form onSubmit={getMockData} className='flex items-center gap-2'>
+          <Select value={numOfRows?.toString()} onValueChange={handleNumOfRowsSelect}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Number of Rows" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem defaultChecked defaultValue="5" value="5" descriptor="Ideal for accuracy of your schema.">5 rows</SelectItem>
+              <SelectItem value="10" descriptor="Ideal for using in other applications.">10 rows</SelectItem>
+              <SelectItem value="20" descriptor="Not recommended. Uses a lot of tokens.">20 rows</SelectItem>
+            </SelectContent>
+          </Select>
+          <button 
+            className='px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm'
+          >{mockData ? "Regenerate" : "Generate"}</button>
+        </form>
+        <Select value={mockDataOutput} onValueChange={handleMockDataOutputOptionSelect}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Output" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Table" descriptor="Ideal for visualization">Table View</SelectItem>
+              <SelectItem value="JSON" descriptor="Ideal for testing and other uses">JSON View</SelectItem>
+            </SelectContent>
+          </Select>
+      </div>
+      
       {
-        mockData && <MockDataResult data={mockData as {[_:string]:object[]}} />
+        mockDataOutput === "Table" ? (
+          mockData && <MockDataResult data={mockData as {[_:string]:object[]}} />
+        ) : (
+          <MonacoEditor 
+        value={JSON.stringify(mockData, null, 2) || ""}
+        className="h-[70vh]"
+        language="json"
+        theme="custom-theme"
+        options={{
+          minimap: {
+            enabled: false,
+          },
+          fontFamily: "JetBrains Mono",
+          fontSize: 12,
+        }}
+        beforeMount={monaco => {
+          monaco.editor.defineTheme('custom-theme', {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [],
+            colors: {
+              'editor.background': '#00000000',
+            },
+          });
+
+        }}
+        keepCurrentModel={true}
+      />
+        )
       }
     </div>
   );
