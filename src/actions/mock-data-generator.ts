@@ -5,8 +5,6 @@ import OpenAI from "openai";
 import engineeredPrompt from "@/prompts/prompt-mock-data";
 import type { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
-export const maxDuration = 30;
-
 export async function generateMockDataFromSchema(schema: string, numOfRows: number | undefined = 10) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,

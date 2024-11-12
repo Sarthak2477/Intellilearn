@@ -5,8 +5,6 @@ import OpenAI from "openai";
 import engineeredPrompt from "@/prompts/prompt-documentation-generator";
 import type { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
-export const maxDuration = 30;
-
 export async function generateDocumentationFromSchema(schema: string) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,

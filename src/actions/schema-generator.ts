@@ -5,9 +5,6 @@ import OpenAI from "openai";
 import engineeredPrompt from "@/prompts/prompt-schema-generator";
 import type { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
-export const maxDuration = 30;
-
-
 export async function generateSchemaFromPrompt(prompt: string, previousPrompt?: string) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,

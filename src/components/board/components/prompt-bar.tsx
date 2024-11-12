@@ -18,6 +18,8 @@ import { sleep } from '@/lib/utils';
 
 type Props = {}
 
+export const maxDuration = 60;
+
 export default function PromptBar({}: Props) {
   /*
     Prompt Bar
