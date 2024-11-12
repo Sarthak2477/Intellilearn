@@ -10,7 +10,7 @@ export default function DocumentationViewer({}: Props) {
   const { documentationText } = useInspectorStore();
 
   return (
-    <div className='h-[72vh] overflow-auto'>
+    <div className='h-[80vh] overflow-auto'>
       <Markdown
         className="markdown h-full"
         remarkPlugins={[

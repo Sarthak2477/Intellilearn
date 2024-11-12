@@ -14,7 +14,7 @@ import DocumentationViewer from './documentation-viewer';
 import useFlowStore from '@/stores/flow';
 import useInspectorStore, { TABS__DOCUMENTATION, TABS__EXPORT, TABS__MAIN_SCHEMA, TABS__MOCK_DATA } from '@/stores/inspector';
 import MockDataGenerationSection from './mock-data-generation';
-import ExportSchemaToORMSection from './export';
+import ExportSchemaToORMSection from './export-section';
 
 type Props = {};
 

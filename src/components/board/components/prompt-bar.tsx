@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import { Meteors } from '@/components/global/meteors'
 import { Input } from '@/components/ui/input'
 import { LoaderCircle, Pickaxe, Zap } from 'lucide-react'
 
