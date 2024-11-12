@@ -27,7 +27,7 @@ const LabeledHandle = React.forwardRef<
       labelclassName?: string;
       labelStyle?: CSSProperties,
     }
->(({ className, labelclassName: labelClassName, labelStyle, title, position, ...props }, ref) => (
+>(({ className, labelclassName: labelClassName, labelStyle, title, position, children, ...props }, ref) => (
   <div
     ref={ref}
     title={title}
@@ -38,7 +38,11 @@ const LabeledHandle = React.forwardRef<
     )}
   >
     <BaseHandle position={position} {...props} />
-    <label style={labelStyle} className={`px-3 text-foreground ${labelClassName}`}>{title}</label>
+    {
+      !children && <label style={labelStyle} className={`px-3 text-foreground ${labelClassName}`}>{title}</label>
+    }
+    
+    { children }
   </div>
 ));
 

@@ -2,6 +2,7 @@ import { Node, NodeProps, Position } from "@xyflow/react";
 import { BaseNode } from "@/components/base-node";
 import { LabeledHandle } from "@/components/labeled-handle";
 import useInspectorStore from "@/stores/inspector";
+import { KeySquare } from "lucide-react";
 
 type DatabaseSchemaNode = Node<{
   label: string;
@@ -85,17 +86,36 @@ export function DatabaseSchemaNode({
             </div>
             <div className="relative py-3 pr-0 text-right font-mono">
               <LabeledHandle
-                labelStyle={{
-                  color: getTypeColor(entry.type),
-                }}
+                labelStyle={{}}
                 id={entry.title}
-                title={entry.type}
+                title=""
                 type="source"
                 position={Position.Right}
                 className="p-0 text-blue-400"
                 handleclassname="p-0"
                 labelclassName={`p-0 font-bold`}
-              />
+              >
+                <div className="flex items-center gap-2">
+                  <span 
+                    style={{
+                      color: getTypeColor(entry.type),
+                    }}
+                    className="px-3 text-foreground p-0 font-bold"
+                  >{entry.type}</span>
+                  {
+                    // @ts-ignore
+                    entry.is_pk && (
+                      <KeySquare className="text-yellow-500" size={16}/>
+                    )
+                  }
+                  {
+                    // @ts-ignore
+                    entry.is_null && (
+                      <span className="border-[1px] border-dashed border-gray-400 mr-2 text-xs px-1 rounded-lg text-gray-400">NULL</span>
+                    )
+                  }
+                </div>
+              </LabeledHandle>
             </div>
           </div>
         ))}
