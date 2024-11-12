@@ -11,8 +11,8 @@ export default function NavigationBar({}: Props) {
       <div className="flex items-center">
         <Image src="/logo_no_text.svg" alt="Company header logo" width={70} height={20}/>
         <div className="flex flex-col">
-          <span className="font-poppins text-2xl text-white font-[700]">Logoipsum</span>
-          <span className="text-[10px] font-poppins text-gray-300">SQL made easy with AI-powered platform</span>
+          <span className="font-poppins text-2xl text-white font-[700]">Cohesion</span>
+          <span className="text-[10px] font-poppins text-gray-300">Your SQL assistant!</span>
         </div>
       </div>
       <div className="px-2 py-1 border-[1px] border-gray-800 rounded-lg">
