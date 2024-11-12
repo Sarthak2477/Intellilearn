@@ -193,7 +193,7 @@ export default function CodeEditor({}: CodeEditorProps) {
           minimap: {
             enabled: false,
           },
-          // fontFamily: "JetBrains Mono",
+          fontFamily: "JetBrains Mono",
           readOnly: buffering,
         }}
         beforeMount={monaco => {

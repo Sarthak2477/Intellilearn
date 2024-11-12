@@ -1,5 +1,5 @@
 import { generateMockDataFromSchema } from '@/actions/mock-data-generator';
-import useInspectorStore from '@/stores/inspector';
+import useInspectorStore, { type MockDataOutputConfig } from '@/stores/inspector';
 import React, { FormEvent, useState } from 'react'
 
 import SSCSVParser from '@/lib/sscsv-parser';
@@ -9,16 +9,18 @@ import { LoaderCircle } from 'lucide-react';
 
 import MonacoEditor from "@monaco-editor/react";
 
-type MockDataOutputConfig = "JSON" | "Table";
 
 export default function MockDataGeneration() {
-  // const [ ]
   const [ loading, setLoading ] = useState(false);
-  const [ mockData, setMockData ] = useState<object | null>(null); 
-  const [ numOfRows, setNumOfRows ] = useState<number | null>(null);
-  const [ mockDataOutput, setMockDataOutput ] = useState<MockDataOutputConfig>("Table");
-
-  const { mainSchemaText } = useInspectorStore();
+  const { 
+    mainSchemaText, 
+    mockData, 
+    setMockData, 
+    mockDataOutput, 
+    setMockDataOutput, 
+    numOfRows, 
+    setNumOfRows 
+  } = useInspectorStore();
   
   const handleNumOfRowsSelect = (val: string) => setNumOfRows(parseInt(val));
   const handleMockDataOutputOptionSelect = (val: MockDataOutputConfig) => setMockDataOutput(val);

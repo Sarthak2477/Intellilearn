@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+export type MockDataOutputConfig = "JSON" | "Table";
+
 interface InspectorState {
   mainSchemaText: string;
   setMainSchemaText: (_:string) => void;
@@ -23,6 +25,13 @@ interface InspectorState {
 
   isExplaining: boolean;
   setIsExplaining: (_:boolean) => void;
+
+  mockData: object | null;
+  setMockData: (_: object | null) => void;
+  mockDataOutput: MockDataOutputConfig;
+  setMockDataOutput: (_: MockDataOutputConfig) => void;
+  numOfRows: number | null,
+  setNumOfRows: (_:number | null) => void;
 }
 
 const useInspectorStore = create<InspectorState>()(set => ({
@@ -48,6 +57,15 @@ const useInspectorStore = create<InspectorState>()(set => ({
 
   isExplaining: false,
   setIsExplaining: (val) => set(_ => ({ isExplaining: val })),
+
+  mockData: null,
+  setMockData: (data) => set(_ => ({ mockData: data })),
+
+  mockDataOutput: "Table",
+  setMockDataOutput: (config) => set(_ => ({ mockDataOutput: config })),
+
+  numOfRows: 5,
+  setNumOfRows: (val) => set(_ => ({ numOfRows: val })),
 }));
 
 export default useInspectorStore;
