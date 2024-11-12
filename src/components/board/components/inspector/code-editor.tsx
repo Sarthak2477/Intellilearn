@@ -8,8 +8,9 @@ import type { OnMount as OnMonacoMount } from '@monaco-editor/react';
 import useInspectorStore from '@/stores/inspector';
 import useFlowStore from '@/stores/flow';
 import SQLToReactFlowParser from '@/lib/react-flow-parser';
-import { Sparkle } from 'lucide-react';
+import { Sparkle, X } from 'lucide-react';
 import ExplainWithAIButton from './explain-with-ai-button';
+import ExplainWithAIComponent from './explain-with-ai-component';
 
 type CodeEditorProps = {}
 
@@ -38,10 +39,15 @@ export default function CodeEditor({}: CodeEditorProps) {
     left: 0,
     visible: false,
   });
+  const [currentSelection, setCurrentSelection] = useState("");
 
   const explainWithAIButtonRef = useRef<HTMLDivElement | null>(null);
 
-  const handleExplainWithAIButtonClick = () => setIsExplaining(true);
+  const handleExplainWithAIButtonClick = () => {
+    if ( !currentSelection ) return;
+
+    setIsExplaining(true);
+  }
   
   const handleCodeChange = (value: string | undefined) => {
     // Don't update flow chart when streaming
@@ -74,7 +80,7 @@ export default function CodeEditor({}: CodeEditorProps) {
 
     editor.onDidChangeCursorSelection(e => {
       // Selection change
-      if (isExplaining) return;
+      // if (isExplaining) return;
       
       const currentModel = editor.getModel();
       if ( currentModel ) {
@@ -99,6 +105,8 @@ export default function CodeEditor({}: CodeEditorProps) {
               top,
               visible: true,
             });
+
+            setCurrentSelection(selectedText);
           } else {
             setMenuPosition(prev => ({ ...prev, visible: false }));
           }
@@ -164,11 +172,18 @@ export default function CodeEditor({}: CodeEditorProps) {
   
   return (
     <div className="h-[70vh] relative">
-      <ExplainWithAIButton 
-        {...menuPosition}
-        handleButtonClick={handleExplainWithAIButtonClick}
-        ref={explainWithAIButtonRef}
-      />
+      {
+        !isExplaining ? 
+          <ExplainWithAIButton 
+            {...menuPosition}
+            handleButtonClick={handleExplainWithAIButtonClick}
+            ref={explainWithAIButtonRef}
+          /> 
+          :
+          <ExplainWithAIComponent 
+            sectionToExplain={currentSelection}
+          />
+      }
       <Editor 
         value={mainSchemaText || ""}
         className="h-full"
