@@ -118,7 +118,7 @@ export default function NodeRenderer({
         nodesDraggable
       >
         <Background color='#fff2' bgColor='var(--board-default-background)' size={2} gap={20} />
-        <Controls position='top-left'/>
+        <Controls position='bottom-left' className='scale-150 -translate-y-8'/>
       </ReactFlow>
       <div className='absolute top-4 right-4 flex flex-row-reverse items-center gap-2'>
         <TooltipProvider>

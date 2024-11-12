@@ -1,5 +1,5 @@
-import NavigationBar from "@/components/navigation";
 import React from "react";
+import Logo from "@/components/logo";
 
 function Layout({
   children
@@ -8,7 +8,7 @@ function Layout({
 }) {
   return (
     <div className="w-screen h-screen relative flex flex-col">
-      <NavigationBar />
+      <Logo />
       { children }
     </div>
   );
