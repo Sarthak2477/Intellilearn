@@ -6,6 +6,7 @@ type Props = {
   imageUrl: string;
   className?: string;
   comingSoon?: boolean;
+  onClick?: () => void;
 }
 
 // Component to export to respective language
@@ -13,9 +14,12 @@ export default function ExportButton({
   imageUrl,
   className,
   comingSoon = false,
+  onClick,
 }: Props) {
   return (
-    <div className={cn(
+    <div 
+    onClick={onClick}
+    className={cn(
       "relative h-9 w-10 flex items-center justify-center rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-all",
       className,
     )}>

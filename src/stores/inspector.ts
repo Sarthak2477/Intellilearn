@@ -1,8 +1,19 @@
 import { create } from "zustand";
 
+export const TABS__MAIN_SCHEMA = "main-code";
+export const TABS__DOCUMENTATION = "documentation";
+export const TABS__MOCK_DATA = "mock-data";
+export const TABS__EXPORT = "export";
+
 export type MockDataOutputConfig = "JSON" | "Table" | "sql";
 
+export type ExportOptions = "django" | "prisma" | "eloquent" | "drizzle";
+
+
 interface InspectorState {
+  currentTab: string;
+  setCurrentTab: (_:string) => void;
+  
   mainSchemaText: string;
   setMainSchemaText: (_:string) => void;
   addToMainSchemaText: (_:string) => void;
@@ -32,9 +43,15 @@ interface InspectorState {
   setMockDataOutput: (_: MockDataOutputConfig) => void;
   numOfRows: number | null,
   setNumOfRows: (_:number | null) => void;
+
+  exportOption: ExportOptions;
+  setExportOption: (_:ExportOptions) => void;
 }
 
 const useInspectorStore = create<InspectorState>()(set => ({
+  currentTab: TABS__MAIN_SCHEMA,
+  setCurrentTab: (tab) => set(_ => ({ currentTab: tab })),
+  
   mainSchemaText: "",
   setMainSchemaText: (newSchemaText) => set(state => ({ mainSchemaText: newSchemaText})),
   addToMainSchemaText: (newCharacter) => set(state => ({ mainSchemaText: state.mainSchemaText + newCharacter})),
@@ -66,6 +83,9 @@ const useInspectorStore = create<InspectorState>()(set => ({
 
   numOfRows: 5,
   setNumOfRows: (val) => set(_ => ({ numOfRows: val })),
+
+  exportOption: "django",
+  setExportOption: (option) => set(_ => ({ exportOption: option })),
 }));
 
 export default useInspectorStore;

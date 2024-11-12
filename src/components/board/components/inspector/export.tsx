@@ -4,19 +4,16 @@ import { Stream } from 'openai/streaming.mjs';
 import MonacoEditor from "@monaco-editor/react";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import useInspectorStore from '@/stores/inspector';
+import useInspectorStore, { ExportOptions } from '@/stores/inspector';
 import { generateDjangoModelFromSchema } from '@/actions/django-export-generator';
 import { generatePrismaModelFromSchema } from '@/actions/prisma-export-generator';
 import prismaTokenizer from '@/lib/prisma-tokenizer';
 
-type ExportOptions = "django" | "prisma" | "eloquent" | "drizzle";
 
 export default function ExportSchemaToORMSection() {
   const [ exporting, setExporting ] = useState(false);
   const [ output, setOutput ] = useState("");
-  const [ exportOption, setExportOption ] = useState<ExportOptions>("django");
-
-  const { mainSchemaText } = useInspectorStore();
+  const { mainSchemaText, exportOption, setExportOption } = useInspectorStore();
   
   const handleChangeExportOption = (option: ExportOptions) => setExportOption(option);
 

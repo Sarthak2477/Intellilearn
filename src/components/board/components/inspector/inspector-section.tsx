@@ -2,7 +2,7 @@
 
 import { X } from 'lucide-react';
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Tabs, TabsContent, TabsList } from '@/components/ui/tabs';
@@ -12,16 +12,11 @@ import CodeEditor from './code-editor';
 import DocumentationViewer from './documentation-viewer';
 
 import useFlowStore from '@/stores/flow';
-import useInspectorStore from '@/stores/inspector';
+import useInspectorStore, { TABS__DOCUMENTATION, TABS__EXPORT, TABS__MAIN_SCHEMA, TABS__MOCK_DATA } from '@/stores/inspector';
 import MockDataGenerationSection from './mock-data-generation';
 import ExportSchemaToORMSection from './export';
 
 type Props = {};
-
-const TABS__MAIN_SCHEMA = "main-code";
-const TABS__DOCUMENTATION = "documentation";
-const TABS__MOCK_DATA = "mock-data";
-const TABS__EXPORT = "export";
 
 const TABS__DESCRIPTION: {[_:string]:string} = {
   "main-code": "View AI-generated schema of your prompts",
@@ -32,10 +27,9 @@ const TABS__DESCRIPTION: {[_:string]:string} = {
 
 export default function CodeEditorSection({}: Props) {
   const { toggleEditorOpen, codeEditorOpen } = useFlowStore();
-  const { mainCodeDiffMode, buffering, mainSchemaText } = useInspectorStore();
+  const { mainCodeDiffMode, buffering, mainSchemaText, currentTab, setCurrentTab } = useInspectorStore();
   
-  const [tab, setTab] = useState<string>(TABS__MAIN_SCHEMA);
-  const handleTabChange = (value: string) => setTab(value);
+  const handleTabChange = (value: string) => setCurrentTab(value);
   
   useEffect(() => {
     
@@ -67,7 +61,7 @@ export default function CodeEditorSection({}: Props) {
           <div className='flex justify-between items-center px-2 mb-4'>
             <div className='flex flex-col'>
               <span className='font-bold text-emerald-500 font-sans text-xl'>Schema Inspector</span>
-              <p className='text-xs text-gray-400 font-sans'>{TABS__DESCRIPTION[tab]}</p>
+              <p className='text-xs text-gray-400 font-sans'>{TABS__DESCRIPTION[currentTab]}</p>
             </div>            
             <TooltipProvider>
               <Tooltip>
@@ -81,7 +75,7 @@ export default function CodeEditorSection({}: Props) {
             </TooltipProvider>
           </div>
 
-          <Tabs value={tab} onValueChange={handleTabChange}>
+          <Tabs value={currentTab} onValueChange={handleTabChange}>
             <TabsList className='bg-transparent gap-2 border-b-[1px] border-gray-500/40 pb-3 mb-3 rounded-none w-full justify-start'>
               <CodeEditorTab value={TABS__MAIN_SCHEMA} loading={buffering}>Schema</CodeEditorTab>
               <CodeEditorTab value={TABS__DOCUMENTATION}>Documentation</CodeEditorTab>

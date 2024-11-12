@@ -14,8 +14,9 @@ import { TableNode } from '@/types/renderer';
 
 import '@xyflow/react/dist/style.css';
 import '../css/board.css';
-import useInspectorStore from '@/stores/inspector';
+import useInspectorStore, { TABS__EXPORT } from '@/stores/inspector';
 import ExportButton from './export-button';
+import useFlowStore from '@/stores/flow';
 
 
 const elk = new ELK();
@@ -101,6 +102,9 @@ export default function NodeRenderer({
     handleAutoLayout(nodes, edges);
   });
 
+  const { setEditorOpen } = useFlowStore();
+  const { setExportOption, setCurrentTab} = useInspectorStore();
+
   return (
     <>
       <ReactFlow
@@ -138,10 +142,21 @@ export default function NodeRenderer({
         </TooltipProvider>
         <div className='border-e-2 border-gray-500'></div>
         <div className={`flex gap-2 ${mainSchemaText.length > 0 ? "opacity-1 -translate-y-0" : "opacity-0 -translate-y-5"} transition-all`}>
+
           <ExportButton 
+            onClick={() => {
+              setEditorOpen(true);
+              setCurrentTab(TABS__EXPORT);
+              setExportOption("django");
+            }}
             imageUrl='/django_logo.jpg'
-          />
+            />
           <ExportButton 
+            onClick={() => {
+              setEditorOpen(true);
+              setCurrentTab(TABS__EXPORT);
+              setExportOption("prisma");
+            }}
             className='bg-white p-1'
             imageUrl='/prisma_logo.svg'
           />
