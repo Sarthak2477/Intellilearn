@@ -1,13 +1,18 @@
 "use client";
 
-import React, { useEffect } from 'react'
+import React, { useRef, useState } from 'react'
 
 import { DiffEditor, Editor } from '@monaco-editor/react';
+import type { OnMount as OnMonacoMount } from '@monaco-editor/react';
+
 import useInspectorStore from '@/stores/inspector';
 import useFlowStore from '@/stores/flow';
 import SQLToReactFlowParser from '@/lib/react-flow-parser';
+import { Sparkle } from 'lucide-react';
 
 type CodeEditorProps = {}
+
+const OPEN_WITH_AI_Y_OFFSET_PX = 10; // By how much to offset 'Explain with AI' button
 
 export default function CodeEditor({}: CodeEditorProps) {
   const { 
@@ -23,9 +28,15 @@ export default function CodeEditor({}: CodeEditorProps) {
   const {
     setFlowNodes,
     setFlowEdges,
-    flowNodes,
-    flowEdges,
   } = useFlowStore();
+
+  const [menuPosition, setMenuPosition] = useState({
+    top: 0,
+    left: 0,
+    visible: false,
+  });
+
+  const explainWithAIButtonRef = useRef<HTMLDivElement | null>(null);
   
   const handleCodeChange = (value: string | undefined) => {
     // Don't update flow chart when streaming
@@ -47,6 +58,46 @@ export default function CodeEditor({}: CodeEditorProps) {
       }));
       setFlowEdges(edges);
     }
+  }
+
+  const handleMonacoMount: OnMonacoMount = (editor, monaco) => {
+    editor.getModel()?.onDidChangeContent(() => {
+      // Text Change
+      const value = editor.getValue();
+      handleCodeChange(value);
+    });
+
+    editor.onDidChangeCursorSelection(e => {
+      // Selection change
+      const currentModel = editor.getModel();
+      if ( currentModel ) {
+        const selection = e.selection;
+
+        const startPosition = {
+          lineNumber: selection.startLineNumber,
+          column: selection.startColumn,
+        }
+
+        const startCoordinates = editor.getScrolledVisiblePosition(startPosition);
+        if ( startCoordinates ) {
+          const buttonHeight = explainWithAIButtonRef.current?.clientHeight ?? 0;
+          
+          const top = startCoordinates.top - buttonHeight - OPEN_WITH_AI_Y_OFFSET_PX; 
+          const left = startCoordinates.left;
+
+          const selectedText = currentModel.getValueInRange(selection);
+          if ( selectedText.length > 0 ) {
+            setMenuPosition({
+              left,
+              top,
+              visible: true,
+            });
+          } else {
+            setMenuPosition(prev => ({ ...prev, visible: false }));
+          }
+        }
+      }
+    });
   }
   
   if ( mainCodeDiffMode && !buffering ) {
@@ -75,7 +126,7 @@ export default function CodeEditor({}: CodeEditorProps) {
           minimap: {
             enabled: false,
           },
-          fontFamily: "JetBrains Mono",
+          // fontFamily: "JetBrains Mono",
           readOnly: buffering,
           enableSplitViewResizing: true,
         }}
@@ -105,30 +156,45 @@ export default function CodeEditor({}: CodeEditorProps) {
   }
   
   return (
-    <Editor 
-      value={mainSchemaText || ""}
-      onChange={handleCodeChange}
-      height="70vh"
-      language="sql"
-      theme="custom-theme"
-      options={{
-        minimap: {
-          enabled: false,
-        },
-        // fontFamily: "JetBrains Mono",
-        readOnly: buffering,
-      }}
-      beforeMount={monaco => {
-        monaco.editor.defineTheme('custom-theme', {
-          base: 'vs-dark',
-          inherit: true,
-          rules: [],
-          colors: {
-            'editor.background': '#00000000',
+    <div className="h-[70vh] relative">
+      <div 
+        ref={explainWithAIButtonRef}
+        style={{
+          top: `${menuPosition.top}px`,
+          left: `${menuPosition.left}px`,
+          opacity: menuPosition.visible ? "1" : "0",
+        }}
+        className='absolute h-6 w-32 bg-zinc-800 top-0 left-0 rounded-md flex items-center justify-between py-1 px-3 shadow-sm transition-all z-[100]'
+      >
+        <Sparkle size={16} className='text-gray-400'/>
+        <span className="text-xs text-gray-300">Explain with AI</span>
+      </div>
+      <Editor 
+        value={mainSchemaText || ""}
+        className="h-full"
+        language="sql"
+        theme="custom-theme"
+        options={{
+          minimap: {
+            enabled: false,
           },
-        });
-      }}
-      keepCurrentModel={true}
-    />
+          // fontFamily: "JetBrains Mono",
+          readOnly: buffering,
+        }}
+        beforeMount={monaco => {
+          monaco.editor.defineTheme('custom-theme', {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [],
+            colors: {
+              'editor.background': '#00000000',
+            },
+          });
+
+        }}
+        keepCurrentModel={true}
+        onMount={handleMonacoMount}
+      />
+    </div>
   )
 }
