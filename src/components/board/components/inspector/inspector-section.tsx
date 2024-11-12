@@ -1,11 +1,11 @@
 "use client";
 
-import { LoaderCircle, X } from 'lucide-react';
-import { motion, useScroll } from 'framer-motion';
+import { X } from 'lucide-react';
+import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Tabs, TabsContent, TabsTrigger, TabsList } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList } from '@/components/ui/tabs';
 
 import CodeEditorTab from './inspector-tab';
 import CodeEditor from './code-editor';
@@ -13,6 +13,7 @@ import DocumentationViewer from './documentation-viewer';
 
 import useFlowStore from '@/stores/flow';
 import useInspectorStore from '@/stores/inspector';
+import MockDataGeneration from './mock-data-generation';
 
 type Props = {};
 
@@ -94,6 +95,7 @@ export default function CodeEditorSection({}: Props) {
             </TabsContent>
 
             <TabsContent value={TABS__MOCK_DATA}>
+              <MockDataGeneration />
             </TabsContent>
 
           </Tabs>

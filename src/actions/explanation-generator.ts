@@ -9,9 +9,6 @@ export async function generateExplanationFromSchema(schema: string, explanationP
     apiKey: process.env.OPENAI_API_KEY,
   });
 
-  // console.log(schema);
-  // console.log(`Overall SQL \n \`\`\`sql${schema}\`\`\` \n\n\n Section I want to know about:\n \`\`\`${explanationPart}\`\`\``);
-  
   const stream = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
@@ -36,8 +33,6 @@ export async function generateExplanationFromSchema(schema: string, explanationP
     },
     stream: true,
   });
-
-  // console.log(stream.choices[0]);
 
   return stream;
 }

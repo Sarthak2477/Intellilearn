@@ -19,11 +19,11 @@ export async function generateDocumentationFromSchema(schema: string) {
         "content": `Generate a documentation based on this schema: ${schema}`
       }
     ],
-    temperature: 1,
+    temperature: 0.2,
     max_tokens: 6983,
     top_p: 1,
     frequency_penalty: 0,
-    presence_penalty: 0,
+    presence_penalty: 1.5,
     response_format: {
       "type" : "text"
     },

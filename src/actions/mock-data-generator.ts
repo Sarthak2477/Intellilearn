@@ -5,7 +5,7 @@ import OpenAI from "openai";
 import engineeredPrompt from "@/prompts/prompt-mock-data";
 import type { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
-export async function generateDocumentationFromSchema(schema: string) {
+export async function generateMockDataFromSchema(schema: string, numOfRows: number | undefined = 10) {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
@@ -16,16 +16,16 @@ export async function generateDocumentationFromSchema(schema: string) {
       ...engineeredPrompt as ChatCompletionMessageParam[],
       {
         role: "user",
-        content: `Generate mock data for this sql code \`\`\`sql ${schema}\`\`\``
+        content: `Generate ${numOfRows} rows of mock data for this sql code \`\`\`sql ${schema}\`\`\``
       }
     ],
     temperature: 1,
-    max_tokens: 2048,
+    max_tokens: 1000 * numOfRows,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
     response_format: {
-      "type": "json_object"
+      "type": "text"
     },
   });
   
