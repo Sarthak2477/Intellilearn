@@ -18,17 +18,17 @@ type Props = {};
 
 const TABS__MAIN_SCHEMA = "main-code";
 const TABS__DOCUMENTATION = "documentation";
-const TABS__DIFF = "diff";
+const TABS__MOCK_DATA = "mock-data";
 
 const TABS__DESCRIPTION: {[_:string]:string} = {
   "main-code": "View AI-generated schema of your prompts",
   "documentation": "AI-generated documentaions of the schema code",
-  "diff": "Compare suggestions against old schema"
+  "mock-data": "Generate unique mock data from schema"
 }
 
 export default function CodeEditorSection({}: Props) {
   const { toggleEditorOpen, codeEditorOpen } = useFlowStore();
-  const { mainCodeDiffMode, buffering } = useInspectorStore();
+  const { mainCodeDiffMode, buffering, mainSchemaText } = useInspectorStore();
   
   const [tab, setTab] = useState<string>(TABS__MAIN_SCHEMA);
   const handleTabChange = (value: string) => setTab(value);
@@ -81,6 +81,9 @@ export default function CodeEditorSection({}: Props) {
             <TabsList className='bg-transparent gap-2 border-b-[1px] border-gray-500/40 pb-3 mb-3 rounded-none w-full justify-start'>
               <CodeEditorTab value={TABS__MAIN_SCHEMA} loading={buffering}>Schema</CodeEditorTab>
               <CodeEditorTab value={TABS__DOCUMENTATION}>Documentation</CodeEditorTab>
+              {
+                mainSchemaText.length > 0 && <CodeEditorTab value={TABS__MOCK_DATA}>Mock Data</CodeEditorTab>
+              }
             </TabsList>
             <TabsContent value={TABS__MAIN_SCHEMA}>
               <CodeEditor />          
@@ -88,6 +91,9 @@ export default function CodeEditorSection({}: Props) {
 
             <TabsContent value={TABS__DOCUMENTATION}>
               <DocumentationViewer />
+            </TabsContent>
+
+            <TabsContent value={TABS__MOCK_DATA}>
             </TabsContent>
 
           </Tabs>
