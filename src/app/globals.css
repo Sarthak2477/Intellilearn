@@ -52,9 +52,9 @@ body {
   background-color: #434343;
 }
 
-.explain-markdown code {
+/* .explain-markdown code {
   color: greenyellow;
-}
+} */
 
 ::-webkit-scrollbar {
   width: 6px; /* Set the width of the scrollbar */

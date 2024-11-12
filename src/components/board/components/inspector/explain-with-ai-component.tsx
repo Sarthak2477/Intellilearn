@@ -28,10 +28,10 @@ export default function ExplainWithAIComponent({
       setExplanation(explanation => explanation + chunk.choices[0]?.delta.content || "");
     }
   }
-
+  
   function closeExplanation(e: MouseEvent) {
     const target = e.target as HTMLElement;
-    if (!target.closest('.context-menu')) {
+    if (!target.closest('.explain-with-ai')) {
       setIsExplaining(false);
     }
   }
@@ -64,6 +64,8 @@ export default function ExplainWithAIComponent({
 
         flex flex-col
         p-3
+
+        explain-with-ai
       `}
     >
       <div className='flex justify-between'>
@@ -100,7 +102,7 @@ export default function ExplainWithAIComponent({
           remarkGfm,
         ]}
       >
-        { explanation }   
+        { explanation.replace(/```markdown/g, '').replace(/```/g, '') }   
       </Markdown>
     </div>
   );
