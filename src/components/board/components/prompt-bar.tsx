@@ -28,7 +28,7 @@ export default function PromptBar({}: Props) {
 
   const [prompt, setPrompt] = useState("");
 
-  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, setDiffSchemaText , setMainCodeDiffMode, setDocumentationText } = useInspectorStore();
+  const { mainSchemaText, addToMainSchemaText, buffering, setBuffering, setDiffSchemaText , setMainCodeDiffMode, setDocumentationText, documentationBuffering, setDocumentationBuffering } = useInspectorStore();
   const { setEditorOpen, codeEditorOpen, setFlowEdges, setFlowNodes } = useFlowStore();
   const { setMainCodeLoadingValue } = useLoaderStore();
 
@@ -73,16 +73,15 @@ export default function PromptBar({}: Props) {
 
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_DOCUMENTATION_CONTENT);
     if ( !isDiffMode ) {
+      setDocumentationBuffering(true);
       const response3 = await generateDocumentationFromSchema(schemaText_);
-
+      
       const cleanedResponse = response3
         .replace(/```markdown/g, '')  // Remove ```markdown
         .replace(/```/g, ''); // Remove ``` at the end
       
       setDocumentationText(cleanedResponse);
-      // for await (const chunk of response3 as Stream<ChatCompletionChunk>) {
-      //   addToDocumentationText(chunk.choices[0]?.delta?.content || "");
-      // }
+      setDocumentationBuffering(false);
     }
 
     await sleep(2000);

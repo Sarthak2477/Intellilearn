@@ -29,6 +29,8 @@ interface InspectorState {
   
   buffering: boolean;
   setBuffering: (_:boolean) => void;
+  documentationBuffering: boolean;
+  setDocumentationBuffering: (_:boolean) => void;
 
   documentationText: string;
   setDocumentationText: (_: string) => void;
@@ -59,6 +61,8 @@ const useInspectorStore = create<InspectorState>()(set => ({
   
   buffering: false,
   setBuffering: (val) => set(_ => ({ buffering: val })),
+  documentationBuffering: false,
+  setDocumentationBuffering: (val) => set(_ => ({ documentationBuffering: val })),
   
   diffSchemaText: "",
   addToDiffSchemaText: (newCharacter) => set(state => ({ diffSchemaText: state.diffSchemaText + newCharacter})),
