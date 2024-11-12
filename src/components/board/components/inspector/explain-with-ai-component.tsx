@@ -29,11 +29,21 @@ export default function ExplainWithAIComponent({
     }
   }
 
+  function closeExplanation(e: MouseEvent) {
+    const target = e.target as HTMLElement;
+    if (!target.closest('.context-menu')) {
+      setIsExplaining(false);
+    }
+  }
+  
   useEffect(() => {
     const controller = new AbortController();
     generateExplaination();
 
+    document.addEventListener("click", closeExplanation);
+    
     return () => {
+      document.removeEventListener("click", closeExplanation);
       controller.abort();
     }
   }, []);
@@ -70,7 +80,7 @@ export default function ExplainWithAIComponent({
             enabled: false,
           }
         }}
-        height={`${cleanSQL(sectionToExplain).split('\n').length * 15}px`}
+        height={`${(cleanSQL(sectionToExplain).split('\n').length + 1) * 15}px`}
         language="sql"
         theme="custom-theme"
         beforeMount={monaco => {
@@ -85,7 +95,7 @@ export default function ExplainWithAIComponent({
         }}
       />
       <Markdown 
-        className="text-xs text-gray-300 markdown"
+        className="text-xs text-gray-300 markdown explain-markdown"
         remarkPlugins={[
           remarkGfm,
         ]}
