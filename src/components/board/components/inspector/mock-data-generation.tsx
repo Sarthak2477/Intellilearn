@@ -10,7 +10,7 @@ import { LoaderCircle } from 'lucide-react';
 import MonacoEditor from "@monaco-editor/react";
 
 
-export default function MockDataGeneration() {
+export default function MockDataGenerationSection() {
   const [ loading, setLoading ] = useState(false);
   const { 
     mainSchemaText, 

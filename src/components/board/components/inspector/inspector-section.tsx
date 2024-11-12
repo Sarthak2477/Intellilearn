@@ -13,18 +13,21 @@ import DocumentationViewer from './documentation-viewer';
 
 import useFlowStore from '@/stores/flow';
 import useInspectorStore from '@/stores/inspector';
-import MockDataGeneration from './mock-data-generation';
+import MockDataGenerationSection from './mock-data-generation';
+import ExportSchemaToORMSection from './export';
 
 type Props = {};
 
 const TABS__MAIN_SCHEMA = "main-code";
 const TABS__DOCUMENTATION = "documentation";
 const TABS__MOCK_DATA = "mock-data";
+const TABS__EXPORT = "export";
 
 const TABS__DESCRIPTION: {[_:string]:string} = {
   "main-code": "View AI-generated schema of your prompts",
   "documentation": "AI-generated documentaions of the schema code",
-  "mock-data": "Generate unique mock data from schema"
+  "mock-data": "Generate unique mock data from schema",
+  "export": "Export generated schemas to your favorite ORMs"
 }
 
 export default function CodeEditorSection({}: Props) {
@@ -85,6 +88,9 @@ export default function CodeEditorSection({}: Props) {
               {
                 mainSchemaText.length > 0 && <CodeEditorTab value={TABS__MOCK_DATA}>Mock Data</CodeEditorTab>
               }
+              {
+                mainSchemaText.length > 0 && <CodeEditorTab value={TABS__EXPORT}>Export</CodeEditorTab>
+              }
             </TabsList>
             <TabsContent value={TABS__MAIN_SCHEMA}>
               <CodeEditor />          
@@ -95,7 +101,11 @@ export default function CodeEditorSection({}: Props) {
             </TabsContent>
 
             <TabsContent value={TABS__MOCK_DATA}>
-              <MockDataGeneration />
+              <MockDataGenerationSection />
+            </TabsContent>
+
+            <TabsContent value={TABS__EXPORT}>
+              <ExportSchemaToORMSection />
             </TabsContent>
 
           </Tabs>

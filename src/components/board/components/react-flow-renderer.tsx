@@ -15,6 +15,7 @@ import { TableNode } from '@/types/renderer';
 import '@xyflow/react/dist/style.css';
 import '../css/board.css';
 import useInspectorStore from '@/stores/inspector';
+import ExportButton from './export-button';
 
 
 const elk = new ELK();
@@ -40,7 +41,7 @@ export default function NodeRenderer({
   const [nodes, setNodes, onNodesChange] = useNodesState(i__nodes);
   const [edges, setEdges] = useEdgesState(i__edges);
 
-  const { mainCodeDiffMode } = useInspectorStore();
+  const { mainSchemaText } = useInspectorStore();
 
   // Assign nodes and edge and auto layout them
   useEffect(() => {
@@ -115,7 +116,7 @@ export default function NodeRenderer({
         <Background color='#fff2' bgColor='var(--board-default-background)' size={2} gap={20} />
         <Controls position='top-left'/>
       </ReactFlow>
-      <div className='absolute top-4 right-4 '>
+      <div className='absolute top-4 right-4 flex flex-row-reverse items-center gap-2'>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
@@ -135,6 +136,26 @@ export default function NodeRenderer({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
+        <div className='border-e-2 border-gray-500'></div>
+        <div className={`flex gap-2 ${mainSchemaText.length > 0 ? "opacity-1 -translate-y-0" : "opacity-0 -translate-y-5"} transition-all`}>
+          <ExportButton 
+            imageUrl='/django_logo.jpg'
+          />
+          <ExportButton 
+            className='bg-white p-1'
+            imageUrl='/prisma_logo.svg'
+          />
+          <ExportButton 
+            comingSoon
+            className='bg-white p-1'
+            imageUrl='/drizzle_logo.svg'
+          />
+          <ExportButton 
+            comingSoon
+            className='bg-white p-1'
+            imageUrl='/laravel_logo.svg'
+          />
+        </div>
       </div>
     </>
   )
