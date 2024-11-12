@@ -9,7 +9,7 @@ export class SQLSerializer {
     data.forEach((row, index) => {
       command += "\t";
       command += `(${Object.values(row).reduce((acc, value) => {
-        let serializedValue = value;
+        let serializedValue: string = value;
 
         if ( typeof value === "string" ) {
           serializedValue = `'${value}'`
@@ -36,6 +36,9 @@ export class SQLSerializer {
 
   serialize(data: any) {
     let finalSchema = "";
+
+    if(!data) return;
+    
     Object.keys(data).forEach(key => {
       finalSchema += this.serializeDatabaseObjectToSchema(key, data[key]);
       finalSchema += "\n\n";

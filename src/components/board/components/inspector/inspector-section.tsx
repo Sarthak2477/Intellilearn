@@ -78,7 +78,9 @@ export default function CodeEditorSection({}: Props) {
           <Tabs value={currentTab} onValueChange={handleTabChange}>
             <TabsList className='bg-transparent gap-2 border-b-[1px] border-gray-500/40 pb-3 mb-3 rounded-none w-full justify-start'>
               <CodeEditorTab value={TABS__MAIN_SCHEMA} loading={buffering}>Schema</CodeEditorTab>
-              <CodeEditorTab value={TABS__DOCUMENTATION}>Documentation</CodeEditorTab>
+              {
+                mainSchemaText.length > 0 && <CodeEditorTab value={TABS__DOCUMENTATION}>Documentation</CodeEditorTab>
+              }
               {
                 mainSchemaText.length > 0 && <CodeEditorTab value={TABS__MOCK_DATA}>Mock Data</CodeEditorTab>
               }
