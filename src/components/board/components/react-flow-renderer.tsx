@@ -106,7 +106,7 @@ export default function NodeRenderer({
   // Auto layout items in the beggining
   useEffect(() => {
     handleAutoLayout(nodes, edges);
-  });
+  }, []);
 
   const { setEditorOpen } = useFlowStore();
   const { setExportOption, setCurrentTab} = useInspectorStore();
