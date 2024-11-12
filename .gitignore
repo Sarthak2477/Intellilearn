@@ -9,7 +9,7 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-prompts/schema_summarizer/node_modules
+examples/schema_summarizer/node_modules
 prompts/package-lock.json
 
 # testing
