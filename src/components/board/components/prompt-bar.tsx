@@ -76,18 +76,19 @@ export default function PromptBar({}: Props) {
     setFlowEdges(edges);
 
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_DOCUMENTATION_CONTENT);
-    // if ( !isDiffMode ) {
-    //   const response3 = await generateDocumentationFromSchema(mainSchemaText);
+    if ( !isDiffMode ) {
+      console.log("MAIN SCHEMA: ", schemaText_);
+      const response3 = await generateDocumentationFromSchema(schemaText_);
 
-    //   const cleanedResponse = response3
-    //     .replace(/```markdown/g, '')  // Remove ```markdown
-    //     .replace(/```/g, ''); // Remove ``` at the end
+      const cleanedResponse = response3
+        .replace(/```markdown/g, '')  // Remove ```markdown
+        .replace(/```/g, ''); // Remove ``` at the end
       
-    //   setDocumentationText(cleanedResponse);
-    //   // for await (const chunk of response3 as Stream<ChatCompletionChunk>) {
-    //   //   addToDocumentationText(chunk.choices[0]?.delta?.content || "");
-    //   // }
-    // }
+      setDocumentationText(cleanedResponse);
+      // for await (const chunk of response3 as Stream<ChatCompletionChunk>) {
+      //   addToDocumentationText(chunk.choices[0]?.delta?.content || "");
+      // }
+    }
 
     await sleep(2000);
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.COMPLETE);
