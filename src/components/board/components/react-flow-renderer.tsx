@@ -131,7 +131,7 @@ export default function NodeRenderer({
           )
         }
         <Background color='#fff2' bgColor='var(--board-default-background)' size={2} gap={20} />
-        <Controls position='bottom-left'/>
+        <Controls position='bottom-left' className='-translate-y-8'/>
       </ReactFlow>
       <div className='absolute top-4 right-4 flex flex-row-reverse items-center gap-2'>
         <TooltipProvider>
