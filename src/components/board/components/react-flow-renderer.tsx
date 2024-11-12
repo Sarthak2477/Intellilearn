@@ -29,7 +29,7 @@ const elkOptions = {
   'elk.direction': 'RIGHT',
   'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
   'elk.layered.nodePlacement.strategy': 'SIMPLE',
-  'elk.layered.layering.strategy': 'NETWORK_SIMPLEX'
+  'elk.layered.layering.strategy': 'NETWORK_SIMPLEX',
 };
 
 type NodeRendererProps = {
@@ -65,18 +65,22 @@ export default function NodeRenderer({
         id: node.id,
         ...getNodeDimensions(node),
         // Add ports for better edge routing
-        ports: node.data.schema.map((field) => ({
-          id: `${node.id}-${field.title}`,
-          properties: {
-            side: 'EAST'
-          }
-        }))
+        ports: node.data.schema.map((field) => {
+          return {
+            id: `${node.id}-${field.title}`,
+            properties: {
+              side: "RIGHT",
+            }
+          };
+        })
       })),
-      edges: edges.map((edge) => ({
-        id: edge.id,
-        sources: [edge.source],
-        targets: [edge.target]
-      }))
+      edges: edges.map((edge) => {
+        return {
+          id: edge.id,
+          sources: [edge.source],
+          targets: [edge.target],
+        }
+      })
     };
 
     try {
@@ -92,6 +96,7 @@ export default function NodeRenderer({
           }
         }))
       );
+      
     } catch (error) {
       console.error('Layout calculation failed:', error);
     }

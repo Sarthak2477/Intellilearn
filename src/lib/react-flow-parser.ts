@@ -180,10 +180,11 @@ class SQLToReactFlowParser {
       foreignKeys.forEach(fk => {
         const edge: Edge = {
           id: `${tableName}-${fk.targetTable}`,
-          source: tableName,
-          target: fk.targetTable,
-          sourceHandle: fk.sourceColumn,
-          targetHandle: fk.targetColumn
+          target: tableName,
+          source: fk.targetTable,
+          sourceHandle: fk.targetColumn,
+          targetHandle: fk.sourceColumn,
+          animated: true,
         };
         this.edges.push(edge);
       });
