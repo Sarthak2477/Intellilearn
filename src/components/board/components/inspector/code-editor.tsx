@@ -9,6 +9,7 @@ import useInspectorStore from '@/stores/inspector';
 import useFlowStore from '@/stores/flow';
 import SQLToReactFlowParser from '@/lib/react-flow-parser';
 import { Sparkle } from 'lucide-react';
+import ExplainWithAIButton from './explain-with-ai-button';
 
 type CodeEditorProps = {}
 
@@ -23,6 +24,8 @@ export default function CodeEditor({}: CodeEditorProps) {
     clearDiffSchemaText,
     setMainCodeDiffMode,
     setMainSchemaText,
+    isExplaining, 
+    setIsExplaining,
   } = useInspectorStore();
 
   const {
@@ -37,6 +40,8 @@ export default function CodeEditor({}: CodeEditorProps) {
   });
 
   const explainWithAIButtonRef = useRef<HTMLDivElement | null>(null);
+
+  const handleExplainWithAIButtonClick = () => setIsExplaining(true);
   
   const handleCodeChange = (value: string | undefined) => {
     // Don't update flow chart when streaming
@@ -69,6 +74,8 @@ export default function CodeEditor({}: CodeEditorProps) {
 
     editor.onDidChangeCursorSelection(e => {
       // Selection change
+      if (isExplaining) return;
+      
       const currentModel = editor.getModel();
       if ( currentModel ) {
         const selection = e.selection;
@@ -157,18 +164,11 @@ export default function CodeEditor({}: CodeEditorProps) {
   
   return (
     <div className="h-[70vh] relative">
-      <div 
+      <ExplainWithAIButton 
+        {...menuPosition}
+        handleButtonClick={handleExplainWithAIButtonClick}
         ref={explainWithAIButtonRef}
-        style={{
-          top: `${menuPosition.top}px`,
-          left: `${menuPosition.left}px`,
-          opacity: menuPosition.visible ? "1" : "0",
-        }}
-        className='absolute h-6 w-32 bg-zinc-800 top-0 left-0 rounded-md flex items-center justify-between py-1 px-3 shadow-sm transition-all z-[100]'
-      >
-        <Sparkle size={16} className='text-gray-400'/>
-        <span className="text-xs text-gray-300">Explain with AI</span>
-      </div>
+      />
       <Editor 
         value={mainSchemaText || ""}
         className="h-full"

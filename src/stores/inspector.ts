@@ -20,6 +20,9 @@ interface InspectorState {
   documentationText: string;
   setDocumentationText: (_: string) => void;
   addToDocumentationText: (_:string) => void;
+
+  isExplaining: boolean;
+  setIsExplaining: (_:boolean) => void;
 }
 
 const useInspectorStore = create<InspectorState>()(set => ({
@@ -42,6 +45,9 @@ const useInspectorStore = create<InspectorState>()(set => ({
   documentationText: "",
   setDocumentationText: (newDocumentationText) => set(_ => ({ documentationText: newDocumentationText })),
   addToDocumentationText: (newCharacter) => set(state => ({ documentationText: state.documentationText + newCharacter})),
+
+  isExplaining: false,
+  setIsExplaining: (val) => set(_ => ({ isExplaining: val })),
 }));
 
 export default useInspectorStore;
