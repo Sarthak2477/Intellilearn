@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { LoaderCircle } from 'lucide-react';
 
 import MonacoEditor from "@monaco-editor/react";
-
+import { SQLSerializer } from '@/lib/sql-serializer';
 
 export default function MockDataGenerationSection() {
   const [ loading, setLoading ] = useState(false);
@@ -37,6 +37,8 @@ export default function MockDataGenerationSection() {
     setMockData(parsedData.data);
     setLoading(false);
   }
+
+  const serializer = new SQLSerializer();
   
   if ( loading ) return <div className='flex flex-col items-center justify-center h-[70vh] gap-1 py-10'>
     <LoaderCircle size={28} className='text-emerald-500 animate-spin'/>
@@ -68,6 +70,7 @@ export default function MockDataGenerationSection() {
             <SelectContent>
               <SelectItem value="Table" descriptor="Ideal for visualization">Table View</SelectItem>
               <SelectItem value="JSON" descriptor="Ideal for testing and other uses">JSON View</SelectItem>
+              <SelectItem value="SQL" descriptor="To insert into an actual database for hacking">SQL View</SelectItem>
             </SelectContent>
           </Select>
       </div>
@@ -77,9 +80,9 @@ export default function MockDataGenerationSection() {
           mockData && <MockDataResult data={mockData as {[_:string]:object[]}} />
         ) : (
           <MonacoEditor 
-        value={JSON.stringify(mockData, null, 2) || ""}
+        value={mockDataOutput === "JSON" ? JSON.stringify(mockData, null, 2) || "" : serializer.serialize(mockData)}
         className="h-[70vh]"
-        language="json"
+        language={mockDataOutput.toLowerCase()}
         theme="custom-theme"
         options={{
           minimap: {

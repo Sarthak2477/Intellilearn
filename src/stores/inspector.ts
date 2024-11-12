@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type MockDataOutputConfig = "JSON" | "Table";
+export type MockDataOutputConfig = "JSON" | "Table" | "sql";
 
 interface InspectorState {
   mainSchemaText: string;
