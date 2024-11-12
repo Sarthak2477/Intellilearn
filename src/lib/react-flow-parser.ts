@@ -1,3 +1,4 @@
+
 import type { TableNode } from "@/types/renderer";
 import type { Edge } from "@xyflow/react";
 import { cleanSQL } from "./utils";
@@ -52,6 +53,38 @@ class SQLToReactFlowParser {
     };
   }
 
+  private splitColumnDefinitions(columnSection: string): string[] {
+    const results: string[] = [];
+    let current = '';
+    let parenCount = 0;
+    let inQuotes = false;
+    
+    for (let i = 0; i < columnSection.length; i++) {
+      const char = columnSection[i];
+      
+      if (char === '(' && !inQuotes) {
+        parenCount++;
+      } else if (char === ')' && !inQuotes) {
+        parenCount--;
+      } else if (char === '`') {
+        inQuotes = !inQuotes;
+      }
+      
+      if (char === ',' && parenCount === 0 && !inQuotes) {
+        results.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    
+    if (current.trim()) {
+      results.push(current.trim());
+    }
+    
+    return results;
+  }
+
   private parseCreateTable(statement: string): void {
     // Extract table name
     const tableNameMatch = statement.match(/`?(\w+)`?\s*\(/i);
@@ -61,7 +94,7 @@ class SQLToReactFlowParser {
     
     // Extract column definitions
     const columnSection = statement.substring(statement.indexOf('(') + 1, statement.lastIndexOf(')'));
-    const columnDefinitions = columnSection.split(',').map(col => col.trim());
+    const columnDefinitions = this.splitColumnDefinitions(columnSection);
     
     const schema: SchemaField[] = [];
     const foreignKeys: ForeignKey[] = [];
@@ -104,7 +137,13 @@ class SQLToReactFlowParser {
       if (parts.length < 2) return;
 
       const columnName = parts[0].replace(/`/g, '');
-      const dataType = parts[1].split('(')[0].toLowerCase();
+      
+      // Handle data type with potential parameters
+      let dataType = parts[1];
+      if (dataType.includes('(')) {
+        dataType = dataType.split('(')[0];
+      }
+      dataType = dataType.toLowerCase();
       
       // Check if this column is a primary key (either inline or in separate constraint)
       const isPK = colDef.toLowerCase().includes('primary key') || 
