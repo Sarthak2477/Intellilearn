@@ -134,7 +134,7 @@ export default function CodeEditor({}: CodeEditorProps) {
         original={mainSchemaText || ""}
         modified={diffSchemaText || ""}
         
-        height="70vh"
+        height="80vh"
         language='sql'
         theme="custom-theme"
         options={{
@@ -171,7 +171,7 @@ export default function CodeEditor({}: CodeEditorProps) {
   }
   
   return (
-    <div className="h-[70vh] relative">
+    <div className="h-[80vh] relative">
       {
         !isExplaining ? 
           <ExplainWithAIButton 

@@ -63,11 +63,6 @@ export default function PromptBar({}: Props) {
     }
 
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_FLOW_CONTENT);
-    // const response2 = await generateFlowDataFromSchema(mainSchemaText);
-    // const { nodes, edges } : {
-    //   nodes: TableNode[],
-    //   edges: Edge[],
-    // } = JSON.parse(response2.choices[0].message.content || "");
 
     const parser = new SQLToReactFlowParser();
     const { nodes, edges } = parser.parse(schemaText_);
@@ -76,18 +71,18 @@ export default function PromptBar({}: Props) {
     setFlowEdges(edges);
 
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.GENERATING_DOCUMENTATION_CONTENT);
-    // if ( !isDiffMode ) {
-    //   const response3 = await generateDocumentationFromSchema(schemaText_);
+    if ( !isDiffMode ) {
+      const response3 = await generateDocumentationFromSchema(schemaText_);
 
-    //   const cleanedResponse = response3
-    //     .replace(/```markdown/g, '')  // Remove ```markdown
-    //     .replace(/```/g, ''); // Remove ``` at the end
+      const cleanedResponse = response3
+        .replace(/```markdown/g, '')  // Remove ```markdown
+        .replace(/```/g, ''); // Remove ``` at the end
       
-    //   setDocumentationText(cleanedResponse);
-    //   // for await (const chunk of response3 as Stream<ChatCompletionChunk>) {
-    //   //   addToDocumentationText(chunk.choices[0]?.delta?.content || "");
-    //   // }
-    // }
+      setDocumentationText(cleanedResponse);
+      // for await (const chunk of response3 as Stream<ChatCompletionChunk>) {
+      //   addToDocumentationText(chunk.choices[0]?.delta?.content || "");
+      // }
+    }
 
     await sleep(2000);
     setMainCodeLoadingValue(ENUM__LOADER_TO_MAIN_CODE.COMPLETE);
@@ -112,7 +107,6 @@ export default function PromptBar({}: Props) {
 
       overflow-hidden
     '>
-      {/* <Meteors number={10} className=''/> */}
       {
         buffering ? <LoaderCircle size={18} className='text-zinc-700 animate-spin' /> : <Zap className='text-zinc-700' size={18} />
       }

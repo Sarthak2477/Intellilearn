@@ -40,7 +40,7 @@ export default function MockDataGenerationSection() {
 
   const serializer = new SQLSerializer();
   
-  if ( loading ) return <div className='flex flex-col items-center justify-center h-[70vh] gap-1 py-10'>
+  if ( loading ) return <div className='flex flex-col items-center justify-center h-[80vh] gap-1 py-10'>
     <LoaderCircle size={28} className='text-emerald-500 animate-spin'/>
     <span className='font-bold text-white/20 font-sans'>AI is generating your mock data</span>
   </div>
@@ -81,7 +81,7 @@ export default function MockDataGenerationSection() {
         ) : (
           <MonacoEditor 
         value={mockDataOutput === "JSON" ? JSON.stringify(mockData, null, 2) || "" : serializer.serialize(mockData)}
-        className="h-[70vh]"
+        className="h-[80vh]"
         language={mockDataOutput.toLowerCase()}
         theme="custom-theme"
         options={{

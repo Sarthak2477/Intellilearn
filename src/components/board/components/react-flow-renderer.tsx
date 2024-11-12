@@ -17,6 +17,7 @@ import '../css/board.css';
 import useInspectorStore, { TABS__EXPORT } from '@/stores/inspector';
 import ExportButton from './export-button';
 import useFlowStore from '@/stores/flow';
+import Image from 'next/image';
 
 
 const elk = new ELK();
@@ -117,8 +118,15 @@ export default function NodeRenderer({
         }}
         nodesDraggable
       >
+        {
+          !edges.length && !nodes.length && (
+            <div className='absolute h-full w-full pointer-events-none flex items-center justify-center'>
+          <Image src="/cohesion.png" alt="Company logo" height={1000} width={1000} className='opacity-[0.02] grayscale' />
+          </div>
+          )
+        }
         <Background color='#fff2' bgColor='var(--board-default-background)' size={2} gap={20} />
-        <Controls position='bottom-left' className='scale-150 -translate-y-8'/>
+        <Controls position='bottom-left'/>
       </ReactFlow>
       <div className='absolute top-4 right-4 flex flex-row-reverse items-center gap-2'>
         <TooltipProvider>

@@ -11,7 +11,7 @@ export default function MockDataResult({
   data
 }: Props) {
   return (
-    <div className='custom-table flex flex-col h-[70vh] overflow-auto'>
+    <div className='custom-table flex flex-col h-[80vh] overflow-auto'>
       {
         Object.keys(data).map(k => {
           return <>

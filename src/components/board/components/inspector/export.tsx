@@ -61,7 +61,7 @@ export default function ExportSchemaToORMSection() {
         </form>
       <MonacoEditor 
         value={output.replace(/```[a-zA-Z0-9]+\n|\n```/g, '').replace(/```/,"")}
-        className="h-[70vh]"
+        className="h-[80vh]"
         language={
           exportOption === "django" ? "python" :
           exportOption === "prisma" ? "prisma" :
