@@ -1,6 +1,8 @@
 "use server";
 
+import engineeredPrompt from "@/prompts/prompt-explanation-generator";
 import OpenAI from "openai";
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
 export async function generateExplanationFromSchema(schema: string, explanationPart: string) {
   const openai = new OpenAI({
@@ -8,15 +10,16 @@ export async function generateExplanationFromSchema(schema: string, explanationP
   });
 
   const stream = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: "gpt-4o",
     messages: [
+      ...engineeredPrompt as ChatCompletionMessageParam[],
       {
         role: "user",
-        content: `From the following SQL schema code:\n ${schema} \n Can you explain what this part of the code means? ${explanationPart}`
+        content: `SQL \n ${schema} \n Section: ${explanationPart}`
       }
     ],
-    temperature: 1,
-    max_tokens: 1000,
+    temperature: 0.4,
+    max_tokens: 5000,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,

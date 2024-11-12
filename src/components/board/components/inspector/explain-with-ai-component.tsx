@@ -5,6 +5,9 @@ import { ChatCompletionChunk } from "openai/resources/index.mjs";
 import { Stream } from "openai/streaming.mjs";
 import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import MonacoEditor from "@monaco-editor/react";
+import { cleanSQL } from "@/lib/utils";
 
 type Props = {
   sectionToExplain: string;
@@ -57,7 +60,36 @@ export default function ExplainWithAIComponent({
         <span className="font-bold font-poppins">Explain with AI</span>
         <X size={18} className='text-gray-400' onClick={() => setIsExplaining(false)} />
       </div>
-      <Markdown className="text-xs text-gray-300">
+      <MonacoEditor 
+        value={cleanSQL(sectionToExplain)}
+        options={{
+          readOnly: true,
+          lineNumbers: "off",
+          fontSize: 12,
+          minimap: {
+            enabled: false,
+          }
+        }}
+        height={`${cleanSQL(sectionToExplain).split('\n').length * 15}px`}
+        language="sql"
+        theme="custom-theme"
+        beforeMount={monaco => {
+          monaco.editor.defineTheme('custom-theme', {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [],
+            colors: {
+              'editor.background': '#00000000',
+            },
+          });
+        }}
+      />
+      <Markdown 
+        className="text-xs text-gray-300 markdown"
+        remarkPlugins={[
+          remarkGfm,
+        ]}
+      >
         { explanation }   
       </Markdown>
     </div>

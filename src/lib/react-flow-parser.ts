@@ -1,5 +1,6 @@
 import type { TableNode } from "@/types/renderer";
 import type { Edge } from "@xyflow/react";
+import { cleanSQL } from "./utils";
 
 interface SchemaField {
   title: string;
@@ -35,7 +36,7 @@ class SQLToReactFlowParser {
     this.nodes = [];
     this.edges = [];
 
-    const cleanedSQL = this.cleanSQL(sqlString);
+    const cleanedSQL = cleanSQL(sqlString);
     
     // Split into separate CREATE TABLE statements
     const tableStatements = cleanedSQL.split(/CREATE TABLE/i).filter(s => s.trim());
@@ -49,29 +50,6 @@ class SQLToReactFlowParser {
       nodes: this.nodes,
       edges: this.edges
     };
-  }
-
-  private cleanSQL(dirtySQL: string) {
-    // Remove comments
-    return dirtySQL
-    .split('\n')
-    .map(line => {
-      // Find the position of the first '--'
-      const commentStart = line.indexOf('--');
-      
-      // If there's no comment, return the line as is
-      if (commentStart === -1) {
-        return line;
-      }
-      
-      // Return only the part before the comment, trimmed
-      return line.substring(0, commentStart).trim();
-    })
-    // Filter out empty lines
-    .filter(line => line.length > 0)
-    // Join back into a single string
-    .join('\n');
-
   }
 
   private parseCreateTable(statement: string): void {
