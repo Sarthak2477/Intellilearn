@@ -6,7 +6,7 @@ import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
 export async function generateExplanationFromSchema(schema: string, explanationPart: string) {
   const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: "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",
   });
 
   const stream = await openai.chat.completions.create({

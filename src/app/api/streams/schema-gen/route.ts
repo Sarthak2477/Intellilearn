@@ -1,70 +1,70 @@
-import OpenAI from "openai";
+"use server";
 
-import type { ChatCompletion, ChatCompletionMessageParam } from "openai/resources/index.mjs";
-import { Stream } from "openai/streaming.mjs";
+import { Groq } from "groq-sdk";
 import { NextRequest, NextResponse } from "next/server";
-
-import engineeredPrompt from "@/prompts/prompt-schema-generator";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
-  // const {
-  //   prompt,
-  //   previousPrompt
-  // } : {
-  //   prompt: string,
-  //   previousPrompt?: string,
-  // } = await request.;
   const prompt = request.nextUrl.searchParams.get("prompt");
   const previousPrompt = undefined;
-  
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+
+  const groq = new Groq({
+    apiKey: "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",
   });
 
-  const openaiResponse = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+  const engineeredPrompt = [
+    {
+      role: "system",
+      content: `You are an expert SQL database designer. Your task is to generate a well-structured PostgreSQL schema based on a given prompt.
+
+Instructions:
+    - Input: A text description of the desired database structure.
+    - Output: A full PostgreSQL CREATE TABLE SQL script.
+    - Requirements:
+        - Define tables with appropriate data types and constraints.
+        - Include primary keys, foreign keys, and indexes where needed.
+        - Ensure normalized structure (avoid redundant data).
+
+Example Input:
+    "A database for an e-commerce store with products, users, and orders."
+
+Example Output:
+\`\`\`sql
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+\`\`\`
+
+Now, generate an SQL schema based on the following prompt:`,
+    },
+  ];
+
+  const response = await groq.chat.completions.create({
+    "model": "llama-3.3-70b-versatile",
     messages: [
-      ...engineeredPrompt as ChatCompletionMessageParam[],
+      ...engineeredPrompt,
       {
-        "role": "user",
-        "content": `Generate a SQL code based on this prompt ${previousPrompt ? `and on the previous model ${previousPrompt}` : ""} : ${prompt}`
-      }
+        role: "user",
+        content: `Generate an SQL schema based on this prompt ${previousPrompt ? `and the previous model ${previousPrompt}` : ""} : ${prompt}`,
+      },
     ],
     temperature: 1,
     max_tokens: 5000,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
-    response_format: {
-      "type": "text"
-    },
-    stream: previousPrompt === undefined, // Don't stream on diff mode
+    response_format: "text",
   });
 
-  if ( previousPrompt !== undefined ) {
-    // No Streaming
-    return Response.json({
-      answer: (openaiResponse as ChatCompletion).choices[0].message.content || "",
-    });
-  }
-  
-  const stream = (openaiResponse as Stream<OpenAI.Chat.Completions.ChatCompletionChunk>).toReadableStream();
-  // const response = new Response(stream, {
-  //   headers: {
-      
-  //   }
-  // });
-
-  const response = new NextResponse(stream, {
+  return new NextResponse(response.choices?.[0]?.message?.content ?? "", {
     headers: {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      Connection: 'keep-alive',
-    }
+      "Content-Type": "text/plain",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+    },
   });
-
-  console.log(response);
-  return response;
 }

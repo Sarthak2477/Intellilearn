@@ -1,32 +1,28 @@
 "use server";
 
-import OpenAI from "openai";
+import { Groq } from "groq-sdk";
 
 import engineeredPrompt from "@/prompts/prompt-schema-generator";
-import type { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
 export async function generateSchemaFromPrompt(prompt: string, previousPrompt?: string) {
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+  const groq = new Groq({
+    apiKey: "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",
   });
 
-  const stream = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+  const stream = await groq.chat.completions.create({
+    model: "mixtral-8x7b-32768",
     messages: [
-      ...engineeredPrompt as ChatCompletionMessageParam[],
+      ...engineeredPrompt, // Ensure this is an array of messages
       {
-        "role": "user",
-        "content": `Generate a SQL code based on this prompt ${previousPrompt ? `and on the previous model ${previousPrompt}` : ""} : ${prompt}`
+        role: "user",
+        content: `Generate a SQL code based on this prompt ${previousPrompt ? `and on the previous model ${previousPrompt}` : ""} : ${prompt}`
       }
     ],
     temperature: 1,
-    max_tokens: 5000,
+    max_tokens: 4096, // Reduce if needed (5000 might be too high)
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
-    response_format: {
-      "type": "text"
-    },
     stream: previousPrompt === undefined, // Don't stream on diff mode
   });
 

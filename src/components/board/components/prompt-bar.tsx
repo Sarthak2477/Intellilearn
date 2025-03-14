@@ -101,10 +101,9 @@ export default function PromptBar({}: Props) {
       bottom-12 left-1/2 -translate-x-1/2 
       bg-zinc-900 
       rounded-xl
-
+      m-[20px]
       flex items-center justify-between
       px-4
-
       overflow-hidden
     '>
       {

@@ -156,7 +156,7 @@ export default function NodeRenderer({
         <div className='border-e-2 border-gray-500'></div>
         <div className={`flex gap-2 ${mainSchemaText.length > 0 ? "opacity-1 -translate-y-0" : "opacity-0 -translate-y-5"} transition-all`}>
 
-          <ExportButton 
+          {/* <ExportButton 
             onClick={() => {
               setEditorOpen(true);
               setCurrentTab(TABS__EXPORT);
@@ -182,7 +182,7 @@ export default function NodeRenderer({
             comingSoon
             className='bg-white p-1'
             imageUrl='/laravel_logo.svg'
-          />
+          /> */}
         </div>
       </div>
     </>
